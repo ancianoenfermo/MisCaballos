@@ -13,9 +13,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/','PagesController@home')->name('home');
+
+Route::get('admin','PagesController@admin')->name('admin');
+
+/* Route::get('/', function () {
     return view('welcome');
+}) */;
+
+
+/* Route::get('admin',function(){
+    return view('admin.paneldecontrol');
 });
+ */
+
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin',
+     'middelware' => 'auth'],
+    function() {
+    Route::get('caballos','CaballosController@index')->name('admin.caballos.index');
+    Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
+    Route::get('vans','VansController@index')->name('admin.vans.index');
+    Route::get('vans/create','VansController@create')->name('admin.vans.create');
+});
+
 
 Auth::routes();
 
