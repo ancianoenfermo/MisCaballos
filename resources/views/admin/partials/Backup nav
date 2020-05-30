@@ -12,7 +12,7 @@
           </li>
 
 
-    <li class="nav-item has-treeview menu-open mt-4{{request()->is('admin/caballos')  ? 'active' : ''}} ">
+    <li class="nav-item has-treeview menu-open mt-2">
       <a href="#" class="nav-link">
         <i class="nav-icon fas fa-horse-head"></i>
         <p>
@@ -22,20 +22,44 @@
       </a>
       <ul class="nav nav-treeview">
         
-        <li class="nav-item">
-          <a href="{{route('admin.caballos.index')}}" class="nav-link {{request()->is('admin/caballos')  ? 'active' : ''}}">
+        <li class="nav-link">
+          <a href="{{route('admin.caballos.index')}}">
             <i class="far fa-eye nav-icon"></i>
             <p>Mis caballos</p>
           </a>
         </li>
 
-        <li class="nav-item">
-          <a href="{{route('admin.caballos.create')}}" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
+        <li class="nav-link">
+          <a href="{{route('admin.caballos.create')}}">
             <i class="fas fa-pencil-alt nav-icon"></i>
             <p>Nuevo caballo</p>
           </a>
         </li>
       </ul>
     </li>
+    
+    <li class="nav-item has-treeview menu-close mt-2">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-trailer"></i>
+          <p>
+            Vans
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{route('admin.vans.index')}}" class="nav-link">
+              <i class="far fa-eye nav-icon"></i>
+              <p>Mis van</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.vans.create')}}" class="nav-link">
+              <i class="fas fa-pencil-alt nav-icon"></i>
+              <p>Nuevo van</p>
+            </a>
+          </li>
+        </ul>
+      </li>
 
   </ul>
