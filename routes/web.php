@@ -33,7 +33,7 @@ Route::group([
     'namespace' => 'Admin',
      'middelware' => 'auth'],
     function() {
-    Route::get('caballos','CaballosController@index')->name('admin.caballos.index');
+    Route::get('caballos/miscaballos','CaballosController@index')->name('admin.caballos.index');
     Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
     Route::get('vans','VansController@index')->name('admin.vans.index');
     Route::get('vans/create','VansController@create')->name('admin.vans.create');
