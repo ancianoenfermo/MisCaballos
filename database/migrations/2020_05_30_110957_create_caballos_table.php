@@ -16,12 +16,12 @@ class CreateCaballosTable extends Migration
         Schema::create('caballos', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
-            $table->date('fechaNacimiento');
+            $table->date('fechaNacimiento')->nullable();
             $table->decimal('alzada',3,0);
             $table->mediumText('textoDestacado');
             $table->text('body');
             
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -41,7 +41,7 @@ class CreateCaballosTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->bigInteger('precio_id')->unsigned();
+            $table->bigInteger('precio_id')->unsigned()->nullable();
             $table->foreign('precio_id')->references('id')->on('precios')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');    

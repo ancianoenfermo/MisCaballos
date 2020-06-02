@@ -35,6 +35,10 @@ Route::group([
     function() {
     Route::get('caballos/miscaballos','CaballosController@index')->name('admin.caballos.index');
     Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
+    Route::post('caballos','CaballosController@store')->name('admin.caballos.store');
+    
+    
+    
     Route::get('vans','VansController@index')->name('admin.vans.index');
     Route::get('vans/create','VansController@create')->name('admin.vans.create');
 });

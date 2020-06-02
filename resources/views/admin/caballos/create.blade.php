@@ -23,7 +23,8 @@
 @endsection
 
 @section('content')
-<form>
+<form method="POST" action="{{route('admin.caballos.store')}}">
+   {{csrf_field()}}
     <div class="row">
             <div class="col-md-8">
                 <div class="card card-primary card-outline">
@@ -41,7 +42,7 @@
                                  <div class="form-group">
                                     <label>Fecha de nacimiento:</label>
                                       <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                          <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                                          <input name= "fechaNacimiento" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                                           <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                               <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                           </div>
@@ -50,9 +51,9 @@
                             </div>
                             <div class="col-md-4">
                                  <!-- Comunidad -->
-                                <div class="form-goup">
+                                <div class="form-group">
                                     <label>Ubicación</label>
-                                    <select class="form-control">
+                                    <select name = "comunidad"class="form-control">
                                         <option value="">Selecciona una comunidad</option>
                                         @foreach($comunidades as $comunidad)
                                         <option value="{{$comunidad->id}}">{{$comunidad->name}}</option>
@@ -60,8 +61,45 @@
                                     </select>
                                 </div>
                             </div>
-                    
                         </div>
+                        
+                        <div class="row">
+                            <div class="col-md-5">
+                                <!-- Alzada -->
+                                <div class="form-group">
+                                    <label>Alzada</label>
+                                    <input name='alzada' class="form-control" placeholder='Introduce el nombre del caballo'>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <!-- Fecha de nacimiento -->
+                                 <div class="form-group">
+                                    <label>Fecha de nacimiento:</label>
+                                      <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                          <input name= "fechaNacimiento" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                            </div>
+                            <div class="col-md-4">
+                                 <!-- Comunidad -->
+                                <div class="form-group">
+                                    <label>Ubicación</label>
+                                    <select name = "comunidad"class="form-control">
+                                        <option value="">Selecciona una comunidad</option>
+                                        @foreach($comunidades as $comunidad)
+                                        <option value="{{$comunidad->id}}">{{$comunidad->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
 
                        
                         <!-- Texto destacado del caballo-->
@@ -82,9 +120,9 @@
                 <div class ="card card-primary card-outline ">
                     <div class="card-body">
                         <!-- Sexo -->
-                        <div class="form-goup">
+                        <div class="form-group">
                             <label>Sexo</label>
-                            <select class="form-control">
+                            <select name="sexo" class="form-control">
                                 <option value="">Selecciona un sexo</option>
                                 @foreach($sexos as $sexo)
                                 <option value="{{$sexo->id}}">{{$sexo->name}}</option>
@@ -93,9 +131,9 @@
                         </div>
 
                         <!-- capa -->
-                        <div class="form-goup mt-2">
+                        <div class="form-group mt-2">
                             <label>Capa</label>
-                            <select class="form-control">
+                            <select name="capa" class="form-control">
                                 <option value="">Selecciona una capa</option>
                                 @foreach($capas as $capa)
                                 <option value="{{$capa->id}}">{{$capa->name}}</option>
@@ -105,7 +143,7 @@
                         <!-- caracter -->
                         <div class="form-goup mt-2">
                             <label>Carácter</label>
-                            <select class="form-control">
+                            <select name="caracter" class="form-control">
                                 <option value="">Selecciona carácter</option>
                                 @foreach($caracters as $caracter)
                                 <option value="{{$caracter->id}}">{{$caracter->name}}</option>
@@ -113,15 +151,19 @@
                             </select>
                         </div>
                          <!-- Disciplina -->
-                        <div class="form-group mt-2">
+                         <div class="form-group">
                             <label>Disciplina</label>
-                            <select class="select2" multiple="multiple" data-placeholder="Selecciona una o más disciplinas" style="width: 100%;">
+                            <select name="disciplinas[]" class="select2" multiple="multiple" data-placeholder="Selecciona una o más disciplinas" style="width: 100%;">
                                 @foreach($disciplinas as $disciplina)
                                 <option  value="{{$disciplina->id}}">{{$disciplina->name}}</option>
                                 @endforeach
                             </select>
                           </div>
-                    
+                        <!-- BOTÓN GUARDAR -->
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block">Guardar caballo</button>
+
+                        </div>
                     
                     </div>
                 </div>
@@ -148,11 +190,15 @@
    CKEDITOR.replace('body');
 </script>
 <script>
-    $('.select2').select2()
- //Initialize Select2 Elements
- $('.select2bs4').select2({
-      theme: 'bootstrap4'
+    $(function () {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+  
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
     })
-</script>
+  </script>
 
  @endpush

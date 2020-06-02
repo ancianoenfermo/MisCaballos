@@ -29,4 +29,20 @@ class CaballosController extends Controller
         $disciplinas = Disciplina::all();
         return view('admin.caballos.create', compact('sexos','capas','caracters','comunidades','disciplinas'));
     }
+
+    public function store(Request $request) {
+            
+        return($request->all());
+        $caballo = new Caballo;
+        $caballo->name = $request->get('name');
+        $caballo->fechaNacimiento = null;
+        $caballo->alzada = 175;
+        $caballo->textoDestacado = $request->get('textoDestacado');
+        $caballo->body = $request->get('body');
+        $caballo->comunidad_id = $request->get('comunidad');
+        $caballo->sexo_id = $request->get('sexo');
+        $caballo->capa_id = $request->get('capa');
+
+        $caballo->save();
+    }
 }
