@@ -6,6 +6,7 @@ use App\Caballo;
 use App\Capa;
 use App\Comunidad;
 use App\Precio;
+use App\Raza;
 use App\Sexo;
 use App\User;
 use Faker\Generator as Faker;
@@ -17,6 +18,7 @@ $factory->define(Caballo::class, function (Faker $faker) {
     $totalSexos = Sexo::count();
     $totalCapas = Capa::count();
     $totalPrecios = Precio::count();
+    $totalRazas = Raza::count();
     
     
     return [
@@ -27,6 +29,7 @@ $factory->define(Caballo::class, function (Faker $faker) {
         'body' => $faker->text($maxNbCahrs = 300), 
        
         'user_id' => $faker->numberBetween(1,$totalUsers),
+        'raza_id' => $faker->numberBetween(1,$totalRazas),
         'comunidad_id' => $faker->numberBetween(1,$totalComunidades),
         'sexo_id' => $faker->numberBetween(1,$totalSexos),
         'capa_id' => $faker->numberBetween(1,$totalCapas),

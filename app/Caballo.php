@@ -20,13 +20,13 @@ class Caballo extends Model
     public function precio(){
         return $this->belongsTo(Precio::class);
     }
-    public function caballos() {
-        return $this->hasMany(Caballo::class);
+    public function raza() {
+        return $this->belongsTo(Raza::class);
     }
     public function disciplinas() {
         return $this->belongsToMany(Disciplina::class);
     }
-    public function tags() {
+    public function caracters() {
         return $this->belongsToMany(Caracter::class);
 }
 

@@ -18,6 +18,7 @@ class CreateCaballosTable extends Migration
             $table->string('name',50);
             $table->date('fechaNacimiento')->nullable();
             $table->decimal('alzada',3,0);
+            $table->decimal('alzadaEstimada',3,0)->nullable();
             $table->mediumText('textoDestacado');
             $table->text('body');
             
@@ -25,6 +26,12 @@ class CreateCaballosTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            
+            $table->bigInteger('raza_id')->unsigned()->nullable();
+            $table->foreign('raza_id')->references('id')->on('razas')
+                ->onDelete('cascade')
+                ->onUpdate('cascade'); 
+            
             
             $table->bigInteger('comunidad_id')->unsigned();
             $table->foreign('comunidad_id')->references('id')->on('comunidads')

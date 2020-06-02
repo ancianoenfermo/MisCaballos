@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'precios',
             'sexos',
             'capas',
+            'razas',
             'caballos'
         ]);
 
@@ -30,8 +31,9 @@ class DatabaseSeeder extends Seeder
         $this->call(PreciosTableSeeder::class);
         $this->call(SexosTableSeeder::class);
         $this->call(CapasTableSeeder::class);
-        $this->call(CaballosTableSeeder::class);
         $this->call(CaractersTableSeeder::class);
+        $this->call(RazasTableSeeder::class);
+        $this->call(CaballosTableSeeder::class);
     }
 
     protected function truncateTables(array $tables) {

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Caracter extends Model
+class Raza extends Model
 {
     public function caballos() {
-        return $this->belongsToMany(Caballo::class);
+        return $this->hasMany(Caballo::class);
     }
 }
