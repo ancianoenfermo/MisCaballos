@@ -27,6 +27,7 @@
    {{csrf_field()}}
     <div class="row">
             <div class="col-md-12">
+                @include('admin.partials.error')
                 <div class="card card-primary card-outline">
                     <div class = "card-body">
                         <!-- FILA 1 -->
@@ -36,21 +37,23 @@
                                 <!-- Nombre del caballo -->
                                 <div class="form-group">
                                     <label>Nombre del cabalo</label>
-                                    <input name='name' class="form-control" placeholder='Introduce el nombre del caballo'>
+                                    <input name='name' class="form-control" value = "{{old('name')}}" placeholder='Introduce el nombre del caballo'>
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <!-- Fecha de nacimiento -->
                                 <div class="form-group">
-                                    <label>Fecha de nacimiento</label>
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                          <input name= "fechaNacimiento" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                          </div>
+                                    <label>Date masks:</label>
+                  
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                      </div>
+                                      <input name = "fechaNacimiento" type="text" class="form-control" value = "{{old('fechaNacimiento')}}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                     </div>
-                                </div>
+                                    <!-- /.input group -->
+                                  </div>
                                 
                             </div>
 
@@ -63,7 +66,9 @@
                                     <select name = "comunidad"class="form-control">
                                         <option value="">Selecciona una comunidad</option>
                                         @foreach($comunidades as $comunidad)
-                                        <option value="{{$comunidad->id}}">{{$comunidad->name}}</option>
+                                        <option value="{{$comunidad->id}}"
+                                            {{ old('comunidad') == $comunidad->id ? 'selected' : '' }}
+                                            >{{$comunidad->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -81,7 +86,9 @@
                                    <select name="raza" class="form-control">
                                         <option value="">Selecciona una raza</option>
                                         @foreach($razas as $raza)
-                               <           <option value="{{$raza->id}}">{{$raza->name}}</option>
+                                            <option value="{{$raza->id}}"
+                                            {{ old('raza') == $raza->id ? 'selected' : '' }}
+                                            >{{$raza->name}}</option>
                                         @endforeach
                                    </select>
                                </div>
@@ -95,7 +102,9 @@
                                     <select name="sexo" class="form-control">
                                          <option value="">Selecciona un sexo</option>
                                          @foreach($sexos as $sexo)
-                                <           <option value="{{$sexo->id}}">{{$sexo->name}}</option>
+                                            <option value="{{$sexo->id}}"
+                                                {{ old('sexo') == $sexo->id ? 'selected' : '' }}
+                                                >{{$sexo->name}}</option>
                                          @endforeach
                                     </select>
                                 </div>
@@ -108,7 +117,9 @@
                                     <select name="capa" class="form-control">
                                         <option value="">Selecciona una capa</option>
                                         @foreach($capas as $capa)
-                                        <option value="{{$capa->id}}">{{$capa->name}}</option>
+                                            <option value="{{$capa->id}}"
+                                            {{ old('capa') == $capa->id ? 'selected' : '' }}  
+                                            >{{$capa->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -118,7 +129,7 @@
                                 <!-- Alzada -->
                                 <div class="form-group">
                                     <label>Alzada</label>
-                                    <input class="form-control"  name='alzada' type="number"  placeholder='Alzada' min=100 max=250>
+                                    <input class="form-control" value = "{{old('alzada')}}"  name='alzada' type="number"  placeholder='Alzada' min=100 max=250>
                                 </div>
                             </div>
 
@@ -126,7 +137,7 @@
                                 <!-- Alzada Estimada -->
                                 <div class="form-group">
                                     <label>Alzada estimada</label>
-                                    <input class="form-control"  name='alzadaEstimada' type="number"  placeholder='Alzada estimada' min=100 max=250>
+                                    <input class="form-control"  value = "{{old('alzadaEstimada')}}"name='alzadaEstimada' type="number"  placeholder='Alzada estimada' min=100 max=250>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +149,10 @@
                                     <label>Disciplina</label>
                                     <select name="disciplinas[]" class="select2" multiple="multiple" data-placeholder="Selecciona una o más" style="width: 100%;">
                                         @foreach($disciplinas as $disciplina)
-                                        <option  value="{{$disciplina->id}}">{{$disciplina->name}}</option>
+                                            <option  
+                                                {{ collect(old('disciplinas'))->contains($disciplina->id) ? 'selected' : ''}}
+                                                value="{{$disciplina->id}}">{{$disciplina->name}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -149,7 +163,10 @@
                                     <label>Carácter</label>
                                     <select name="carcters[]" class="select2" multiple="multiple" data-placeholder="Selecciona uno o más" style="width: 100%;">
                                         @foreach($caracters as $caracter)
-                                        <option  value="{{$caracter->id}}">{{$caracter->name}}</option>
+                                            <option  
+                                                {{ collect(old('carcters'))->contains($caracter->id) ? 'selected' : ''}}
+                                                value="{{$caracter->id}}">{{$caracter->name}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -163,7 +180,15 @@
                                 <!-- Texto destacado del caballo-->
                                 <div class="form-group" resize = "none">
                                     <label>Texto destacado</label>
-                                    <textarea style="resize: none" maxlength="250" rows="3" name='textoDestacado' class="form-control" placeholder='Introduce un resumen de tu caballo'></textarea>
+                                    <textarea 
+                                        style="resize: none" 
+                                        maxlength="250" 
+                                        rows="3"
+                                        name='textoDestacado' 
+                                        class="form-control"
+                                        placeholder='Introduce un resumen de tu caballo'>
+                                        {{old('textoDestacado')}}
+                                    </textarea>
                                 </div>
                             </div>    
                              
@@ -171,7 +196,13 @@
                                 <!-- Descripción del caballo-->
                                     <div class="form-group">
                                         <label>Descripción</label>
-                                        <textarea rows='10' name='body' class="form-control" placeholder='Introduce una descripción detallada del caballo'></textarea>
+                                        <textarea 
+                                            rows='10' 
+                                            name='body' 
+                                            class="form-control" 
+                                            placeholder='Introduce una descripción detallada del caballo'>
+                                            {{old('body')}} 
+                                        </textarea>
                                     </div>
                             </div>
                            
@@ -206,6 +237,12 @@
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+
+<!-- InputMask -->
+<script src="/plugins/moment/moment.min.js"></script>
+<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+
+
  <!-- CKeditor -->
  <script src="/cKeditor/cKeditor.js"></script>
 <script>
@@ -220,7 +257,10 @@
       $('.select2bs4').select2({
         theme: 'bootstrap4'
       })
+      //Datemask dd/mm/yyyy
+      $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/aaaa' })
+      //Money Euro
+      $('[data-mask]').inputmask()
     })
   </script>
-
  @endpush

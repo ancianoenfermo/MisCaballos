@@ -8,8 +8,10 @@ use App\Caracter;
 use App\Comunidad;
 use App\Disciplina;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CaballoRequest;
 use App\Raza;
 use App\Sexo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,12 +34,16 @@ class CaballosController extends Controller
         return view('admin.caballos.create', compact('sexos','capas','caracters','comunidades','disciplinas','razas'));
     }
 
-    public function store(Request $request) {
-            
-       
+    public function store(CaballoRequest $request) {
+                
+        
         $caballo = new Caballo;
         $caballo->name = $request->get('name');
-        $caballo->fechaNacimiento = null;
+        
+        $date = date("Y-m-d", strtotime($request->get('fechaNacimiento')));
+        /* Carbon::parse($request->get('fechaNacimiento')); */
+
+        $caballo->fechaNacimiento = $date;
         $caballo->alzada = $request->get('alzada');
         $caballo->alzadaEstimada = $request->get('alzadaEstimada');
         $caballo->textoDestacado = $request->get('textoDestacado');

@@ -16,7 +16,7 @@ class CreateCaballosTable extends Migration
         Schema::create('caballos', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
-            $table->date('fechaNacimiento')->nullable();
+            $table->date('fechaNacimiento');
             $table->decimal('alzada',3,0);
             $table->decimal('alzadaEstimada',3,0)->nullable();
             $table->mediumText('textoDestacado');
