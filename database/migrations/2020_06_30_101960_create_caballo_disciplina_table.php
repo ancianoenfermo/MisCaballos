@@ -19,14 +19,14 @@ class CreateCaballoDisciplinaTable extends Migration
             $table->bigInteger('caballo_id')->unsigned();
             $table->foreign('caballo_id')->references('id')->on('caballos')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->onUpdate('cascade'); 
         
             $table->bigInteger('disciplina_id')->unsigned();
             $table->foreign('disciplina_id')->references('id')->on('disciplinas')
              ->onDelete('cascade')
              ->onUpdate('cascade');
             
-            $table->timestamps();
+           
         });
     }
 

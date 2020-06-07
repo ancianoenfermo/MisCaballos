@@ -27,7 +27,6 @@ $factory->define(Caballo::class, function (Faker $faker) {
         'alzada' => $faker->numberBetween(140,200),
         'textoDestacado' => $faker->text($maxNbCahrs = 120),
         'body' => $faker->text($maxNbCahrs = 300), 
-       
         'user_id' => $faker->numberBetween(1,$totalUsers),
         'raza_id' => $faker->numberBetween(1,$totalRazas),
         'comunidad_id' => $faker->numberBetween(1,$totalComunidades),

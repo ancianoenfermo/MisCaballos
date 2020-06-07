@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 
 class Caballo extends Model
@@ -25,10 +26,19 @@ class Caballo extends Model
         return $this->belongsTo(Raza::class);
     }
     public function disciplinas() {
-        return $this->belongsToMany(Disciplina::class);
+        
+         return $this->belongsToMany(Disciplina::class);
     }
     public function caracters() {
         return $this->belongsToMany(Caracter::class);
-}
+    }
 
+    public function scopeUser($query, $user) {
+        if($user)
+            return $query->where('user_id', 'LIKE', "%$user%");
+    }
+
+    public function isborrador() {
+        return true;
+    }
 }

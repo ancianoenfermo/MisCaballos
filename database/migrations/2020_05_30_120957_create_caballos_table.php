@@ -16,11 +16,12 @@ class CreateCaballosTable extends Migration
         Schema::create('caballos', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
-            $table->date('fechaNacimiento');
-            $table->decimal('alzada',3,0);
+            $table->date('fechaNacimiento')->nullable();
+            $table->decimal('alzada',3,0)->nullable();
             $table->decimal('alzadaEstimada',3,0)->nullable();
-            $table->mediumText('textoDestacado');
-            $table->text('body');
+            $table->mediumText('textoDestacado')->nullable();
+            $table->text('body')->nullable();
+            $table->date('fechaPublicacion')->nullable();
             
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')
@@ -33,17 +34,17 @@ class CreateCaballosTable extends Migration
                 ->onUpdate('cascade'); 
             
             
-            $table->bigInteger('comunidad_id')->unsigned();
+            $table->bigInteger('comunidad_id')->unsigned()->nullable();
             $table->foreign('comunidad_id')->references('id')->on('comunidads')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
     
-            $table->bigInteger('sexo_id')->unsigned();
+            $table->bigInteger('sexo_id')->unsigned()->nullable();
             $table->foreign('sexo_id')->references('id')->on('sexos')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
     
-            $table->bigInteger('capa_id')->unsigned();
+            $table->bigInteger('capa_id')->unsigned()->nullable();
             $table->foreign('capa_id')->references('id')->on('capas')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

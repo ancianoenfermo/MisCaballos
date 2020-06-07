@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CapasTableSeeder::class);
         $this->call(CaractersTableSeeder::class);
         $this->call(RazasTableSeeder::class);
-        $this->call(CaballosTableSeeder::class);
+        /* $this->call(CaballosTableSeeder::class); */
     }
 
     protected function truncateTables(array $tables) {

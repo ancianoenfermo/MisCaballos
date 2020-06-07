@@ -22,9 +22,10 @@
 
 @endsection
 @section('content')
-<div class="card">
+<div class="card-primary">
     <div class="card-header">
       <h3 class="card-title">Todos los caballos de {{auth()->user()->name}} </h3>
+      <button class ="btn btn-primary float-right"  data-toggle="modal" data-target="#exampleModal"><i class ="fa fa-plus"></i> Nuevo caballo</button>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -42,7 +43,7 @@
                     <td class="w-25"> {{$caballo->name}}</td>
                     <td class="w-50"> {{$caballo->textoDestacado}}</td>
                     <td>
-                        <a href="#"class ="btn btn-xs btn-info"><i class="fa fa-pencil-alt" ></i></a>
+                        <a href="{{route('admin.caballos.update',$caballo)}}"class ="btn btn-xs btn-info"><i class="fa fa-pencil-alt" ></i></a>
                         <a href="#"class ="btn btn-xs btn-danger"><i class="fa fa-times" ></i></a>
                     </td>
                 </tr>  
@@ -74,7 +75,7 @@
 <script>
   $(function () {
     $('#caballos-table').DataTable({
-      "paging": true,
+      "paging": auto,
       "lengthChange": false,
       "searching": false,
       "ordering": true,
@@ -83,6 +84,33 @@
       "responsive": true,
     });
   });
+  
 </script>
-
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form method="POST" action="{{route('admin.caballos.store')}}">
+    {{csrf_field()}}
+  
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo caballo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre del caballo</label>
+          <input name='name' class="form-control" value = "{{old('name')}}" placeholder='Introduce el nombre del caballo'>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary">Crear caballo</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
 @endpush

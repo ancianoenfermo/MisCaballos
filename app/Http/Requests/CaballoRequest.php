@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Caballo;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CaballoRequest extends FormRequest
@@ -13,6 +14,7 @@ class CaballoRequest extends FormRequest
      */
     public function authorize()
     {
+        
         return true;
     }
 
@@ -36,8 +38,7 @@ class CaballoRequest extends FormRequest
             'capa' => 'required',
             'disciplinas' => 'required',
             'caracters' => 'required',
-            
-
         ];
     }
 }
+
