@@ -25,11 +25,20 @@
       </li>
 
       <li class="nav-item ml-4">
-        <a href="{{route('admin.caballos.create')}}" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
+        <a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
           <i class="fas fa-pencil-alt nav-icon"></i>
           <p>Nuevo caballo</p>
         </a>
       </li>
+
+      <!-- <li class="nav-item ml-4">
+        <a href="{{route('admin.caballos.create')}}" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
+          <i class="fas fa-pencil-alt nav-icon"></i>
+          <p>Nuevo caballo</p>
+        </a>
+      </li> -->
+
+
     </ul>
   </li>
   

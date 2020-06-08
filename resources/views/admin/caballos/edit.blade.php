@@ -209,7 +209,14 @@
                                         </textarea>
                                     </div>
                             </div>
-                           
+                           @if ($caballo->fechaPublicacion)
+                            <div class="col-md-12">
+                                <!-- BOTÓN ACTUALIZAR -->
+                                <div class="form-group">
+                                    <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Actualizar</button>
+                                </div>
+                            </div>
+                            @else 
                             <div class="col-md-6">
                                 <!-- BOTÓN GUARDAR COMO BORRADOR -->
                                 <div class="form-group">
@@ -223,6 +230,8 @@
                                     <button name="tipo" value= "publicar" class="btn btn-primary btn-block">Publicar caballo</button>
                                 </div>
                             </div>
+
+                            @endif
 
                         </div>
                     </div>
