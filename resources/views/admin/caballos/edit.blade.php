@@ -24,7 +24,7 @@
 
 @section('content')
 
-<form method="POST" action="{{route('admin.caballos.update',$caballo)}}">
+<form method="POST" action="{{route('admin.caballos.update',$caballo)}}" enctype="multipart/form-data">
    {{csrf_field()}} {{method_field('PUT')}}
     <div class="row">
             <div class="col-md-12">
@@ -185,19 +185,23 @@
 
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class="row mt-3">
+                            
+                               <!-- Foto destacada-->
+                                <!-- <div class="from-group col-md-3">
+                                    <div class="dropzone">
+    
+                                    </div>
+                                </div> -->
+                            
                                 <!-- Texto destacado del caballo-->
-                                <div class="form-group">
+                                <div class="form-group col-md-12">
                                     <label>Texto destacado</label>
                                     <textarea name = "textoDestacado" class="form-control"
                                     placeholder="Introduce un resumen de tu caballo">{{old('textoDestacado', $caballo->textoDestacado)}}</textarea>
                                 </div>
-                            
-                            </div>    
-                             
-                            <div class="col-md-12">
                                 <!-- Descripción del caballo-->
+                                <div class="col-md-12">      
                                     <div class="form-group">
                                         <label>Descripción</label>
                                         <textarea 
@@ -205,10 +209,33 @@
                                             name='body' 
                                             class="form-control" 
                                             placeholder='Introduce una descripción detallada del caballo'>
-                                            {{old('body',$caballo->body)}} 
-                                        </textarea>
+                                            {!!old('body',$caballo->body)!!}</textarea>
+                                        </div>
+                                </div>
+                                <!-- Fotos del Caballo-->
+                                <div class="col-md-12">
+                                   <div class="from-group">
+                                    <label>Fotos del caballo</label>
+                                        <div class="dropzone">
+    
+                                        </div>
                                     </div>
-                            </div>
+
+                                 </div>
+                                
+                            </div>    
+                       
+                       
+                       
+                        </div>
+                        
+                        <div class="row mt-3">     
+                           
+
+                            
+
+
+    
                            @if ($caballo->fechaPublicacion)
                             <div class="col-md-12">
                                 <!-- BOTÓN ACTUALIZAR -->
@@ -247,26 +274,52 @@
 @push('styles')
 <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.min.css">
 @endpush
 
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
 <script src="/plugins/select2/js/select2.full.min.js"></script>
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
 <!-- InputMask -->
 <script src="/plugins/moment/moment.min.js"></script>
 <script src="/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 
+<!-- FileInput -->
+<script src="/dropzone/dist/dropzone.js"></script>
 
  <!-- CKeditor -->
- <script src="/cKeditor/cKeditor.js"></script>
+<script src="/cKeditor/cKeditor.js"></script>
 <script>
    CKEDITOR.replace('body');
+   
+   var myDropzone = new Dropzone('.dropzone', {
+        url: '/admin/caballos/{{$caballo->id}}/photos',
+        paramName: 'photo',
+        /* acceptedFiles: 'image/*',
+        maxFilesize: 2, */
+        maxFiles:5,       
+        headers: {
+            'X-CSRF-TOKEN' : '{{csrf_token()}}'
+        },
+        dictDefaultMessage: 'Selecciona fotos del caballo'
+   });
+   
+   myDropzone.on('error', function(file, res) {
+     
+        file.previewElement.querySelectorAll('.dz-error-message span')[0].textContent = 'Error';
+        /* console.log(res); */
+    
+        /* var msg = res.photo[0];
+        $('.dz-error-message > span').text(msg);
+ */
+   }); 
+   
+   
+   Dropzone.autoDiscover = false;
 </script>
+   
 <script>
     $(function () {
       //Initialize Select2 Elements
@@ -280,6 +333,7 @@
       $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/aaaa' })
       //Money Euro
       $('[data-mask]').inputmask()
+
     })
   </script>    
 

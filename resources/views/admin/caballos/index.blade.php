@@ -62,6 +62,7 @@
  <!-- DataTables -->
  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
  @endpush
 
  @push('scripts')
@@ -75,7 +76,6 @@
 <script>
   $(function () {
     $('#caballos-table').DataTable({
-      "paging": auto,
       "lengthChange": false,
       "searching": false,
       "ordering": true,
@@ -107,7 +107,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button class="btn btn-primary">Crear caballo</button>
+        <button class="btn btn-primary" >Crear caballo</button>
       </div>
     </div>
   </div>

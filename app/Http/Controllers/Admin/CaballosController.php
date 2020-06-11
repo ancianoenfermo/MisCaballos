@@ -125,6 +125,10 @@ class CaballosController extends Controller
 
         $caballo->disciplinas()->sync($request->get('disciplinas'));
         $caballo->caracters()->sync($request->get('caracters'));
+
+        /* if ($foto = Caballo::setFoto($request->foto)) {
+         $request->request->add(['foto'-> $foto]);
+        } */
         
         if ($request->get('tipo') == 'borrador') {
             return back()->with('flash', 'Tu caballo ha sido guardado como borrador, sigue trabajando');

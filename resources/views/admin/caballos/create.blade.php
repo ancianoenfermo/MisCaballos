@@ -14,11 +14,11 @@
         <div class="modal-body">
           <div class="form-group">
             <label>Nombre del caballo</label>
-            <input name='name' class="form-control" value = "{{old('name')}}" placeholder='Introduce el nombre del caballo'>
+            <input name='name'  class="form-control" value = "{{old('name')}}" placeholder='Introduce el nombre del caballo'>
         </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button class="btn btn-primary">Crear caballo</button>
         </div>
       </div>

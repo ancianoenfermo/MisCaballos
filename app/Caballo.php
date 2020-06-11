@@ -9,7 +9,11 @@ class Caballo extends Model
 {
     protected $guarded = [];
     protected $dates = ['fechaNacimiento'];
-    
+
+    public static function setFoto($foto) {
+        
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -39,10 +39,8 @@ Route::group([
    /*  Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update'); */
     Route::get('caballos/{caballo}','CaballosController@edit')->name('admin.caballos.edit');
     Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update');
+    Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
     
-    
-    Route::get('vans','VansController@index')->name('admin.vans.index');
-    Route::get('vans/create','VansController@create')->name('admin.vans.create');
 });
 
 
