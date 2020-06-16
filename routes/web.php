@@ -1,5 +1,6 @@
 <?php
 
+use App\Raza;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,9 +39,16 @@ Route::group([
     Route::post('caballos','CaballosController@store')->name('admin.caballos.store');
    /*  Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update'); */
     Route::get('caballos/{caballo}','CaballosController@edit')->name('admin.caballos.edit');
+
     Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update');
-    Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
+   
     
+    Route::delete('caballos/{caballo}','CaballosController@destroy')->name('admin.caballos.destroy');
+    Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
+   
+
+
+    Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');
 });
 
 

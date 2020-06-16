@@ -42,6 +42,10 @@ class Caballo extends Model
             return $query->where('user_id', 'LIKE', "%$user%");
     }
 
+    public function photos() {
+        return $this->hasMany(Photo::class);
+    }
+
     public function isborrador() {
         return true;
     }

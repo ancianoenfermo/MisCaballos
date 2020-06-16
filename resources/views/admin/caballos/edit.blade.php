@@ -24,6 +24,7 @@
 
 @section('content')
 
+
 <form method="POST" action="{{route('admin.caballos.update',$caballo)}}" enctype="multipart/form-data">
    {{csrf_field()}} {{method_field('PUT')}}
     <div class="row">
@@ -31,6 +32,7 @@
                 @include('admin.partials.error')
                 <div class="card card-primary card-outline">
                     <div class = "card-body">
+                        
                         <!-- FILA 1 -->
                         <div class="row">
                             
@@ -212,34 +214,38 @@
                                             {!!old('body',$caballo->body)!!}</textarea>
                                         </div>
                                 </div>
-                                <!-- Fotos del Caballo-->
-                                <div class="col-md-12">
-                                   <div class="from-group">
-                                    <label>Fotos del caballo</label>
-                                        <div class="dropzone">
-    
-                                        </div>
-                                    </div>
-
-                                 </div>
                                 
-                            </div>    
-                       
-                       
+                                <!-- Fotos del Caballo-->
+
+                                <!-- @foreach($caballo->photos as $photo)
+                                    <div class="col-md-2">
+                                        <button class="btn btn-danger btn-xs" style="position:absolute">
+                                            <i class="fas fa-trash"></i></button>
+                                        <img class="figure-img img-fluid rounded img-responsive" src="{{url($photo->url)}}">
+                                    </div>
+                                @endforeach -->
+                                
+                            </div>  
+                             <!-- Subir fotos-->
+                            <div class="col-md-12">
+                                <div class="from-group">
+                                
+                                    <div class="dropzone">
+
+                                    </div>
+                                </div>
+
+                            </div> 
                        
                         </div>
+
                         
-                        <div class="row mt-3">     
+                        <div class="row">     
                            
-
-                            
-
-
-    
-                           @if ($caballo->fechaPublicacion)
+                            @if ($caballo->fechaPublicacion)
                             <div class="col-md-12">
                                 <!-- BOTÓN ACTUALIZAR -->
-                                <div class="form-group">
+                                <div class="form-group ml-15">
                                     <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Actualizar</button>
                                 </div>
                             </div>
@@ -259,14 +265,41 @@
                             </div>
 
                             @endif
-
                         </div>
+                    <!-- Fin card-body -->
                     </div>
                 </div>
             </div>
             
     </div>
+    
 </form> 
+@if($caballo->photos->count())
+<div class="row">
+<div class="col-md-12">
+    <div class="card card-primary card-outline">
+        <div class = "card-body">
+                          
+                @foreach($caballo->photos as $photo)
+                <form method ="POST" action="{{route('admin.photos.destroy', $photo)}}">
+                    {{method_field('DELETE')}} {{csrf_field()}}
+                    <div class="col-md-2 display: flex float-left">
+                        <button class="btn btn-danger btn-xs" style="position:absolute">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <img class="img-fluid" src="{{ url('storage/'.$photo->url)}}">                      
+                    </div>
+                </form>
+                @endforeach 
+                    
+            
+        </div>
+    </div>
+</div>
+</div>
+@endif
+
+
 
 
 @endsection
@@ -297,8 +330,7 @@
    var myDropzone = new Dropzone('.dropzone', {
         url: '/admin/caballos/{{$caballo->id}}/photos',
         paramName: 'photo',
-        /* acceptedFiles: 'image/*',
-        maxFilesize: 2, */
+        acceptedFiles: 'image/*',
         maxFiles:5,       
         headers: {
             'X-CSRF-TOKEN' : '{{csrf_token()}}'
@@ -319,6 +351,7 @@
    
    Dropzone.autoDiscover = false;
 </script>
+
    
 <script>
     $(function () {

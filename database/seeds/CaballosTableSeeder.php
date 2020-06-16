@@ -2,6 +2,7 @@
 
 use App\Caballo;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class CaballosTableSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class CaballosTableSeeder extends Seeder
      */
     public function run()
     {
+        Storage::disk('public')->deleteDirectory('fotos');
         factory(Caballo::class)->times(100)->create();
     }
 }

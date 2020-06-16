@@ -32,19 +32,23 @@
       <table id="caballos-table" class="table table-bordered table-hover">
         <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Texto destacado</th>
-          <th>Acciones</th>
+          <th style="width:25%" >Nombre</th>
+          <th style="width: 70%">Texto destacado</th>
+          <th style="width: 5%">Acciones</th>
         </tr>
         </thead>
         <tbody>
             @foreach ($caballos as $caballo)
                 <tr>
-                    <td class="w-25"> {{$caballo->name}}</td>
-                    <td class="w-50"> {{$caballo->textoDestacado}}</td>
+                    <td> {{$caballo->name}}</td>
+                    <td> {{$caballo->textoDestacado}}</td>
                     <td>
-                        <a href="{{route('admin.caballos.update',$caballo)}}"class ="btn btn-xs btn-info"><i class="fa fa-pencil-alt" ></i></a>
-                        <a href="#"class ="btn btn-xs btn-danger"><i class="fa fa-times" ></i></a>
+                        <a href="{{route('admin.caballos.update',$caballo)}}"class ="btn btn-xs btn-info">
+                          <i class="fa fa-pencil-alt" ></i></a>
+                          <form method="POST" action="{{route('admin.caballos.destroy',$caballo)}}" style="display: inline">
+                            {{csrf_field()}} {{method_field('DELETE')}}
+                            <button class ="btn btn-xs btn-danger "><i class="fa fa-times" ></i></button>
+                          </form>
                     </td>
                 </tr>  
             @endforeach
