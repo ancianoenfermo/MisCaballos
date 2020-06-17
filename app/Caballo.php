@@ -4,14 +4,32 @@ namespace App;
 
 use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Caballo extends Model
 {
     protected $guarded = [];
     protected $dates = ['fechaNacimiento'];
 
-    public static function setFoto($foto) {
+    public static function setFotoPortada($fotoPortada, $actual = false) {
         
+        if($fotoPortada) {
+            if($actual) {
+                Storage::disk('public')->delete('imagenes/portadas/'.$actual);
+            }
+            $imageName = Str::random(20).'.jpg';
+            
+            $imagen = Image::make($fotoPortada)->encode('jpg',75);
+            $imagen->resize(500,500, function($constraint){
+                $constraint->upsize();
+            });
+            Storage::disk('public')->put("imagenes/portadas/$imageName", $imagen->stream());
+            return $imageName;
+        } else {
+            return false;
+        }
     }
 
     public function user(){

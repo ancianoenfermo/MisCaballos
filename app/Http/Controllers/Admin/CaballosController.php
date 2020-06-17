@@ -18,6 +18,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function GuzzleHttp\Promise\all;
+
 class CaballosController extends Controller
 {
     public function index() {
@@ -50,65 +52,17 @@ class CaballosController extends Controller
         $disciplinasActuales = Arr::pluck($caballo->disciplinas, 'id');
         $carcatersActuales = Arr::pluck($caballo->caracters, 'id');
         
-        return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades','disciplinas','razas','caballo','disciplinasActuales','carcatersActuales'));
+        return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades','disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','fotoPortada'));
     }
 
 
-    public function updateBorrador(Caballo $caballo,Request $request) {
-        
-        
-        if ($request->get('tipo') == 'borrador') {
-            $this->validate($request, [
-               'name' => 'required'
-           ]);
-           $caballo->fechaPublicacion = null;
-        } else {
-            $this->validate($request,[
-                'name' => 'required',
-                'fechaNacimiento' => 'required',
-                'alzada' => 'required',
-                'textoDestacado' => 'required',
-                'body' => 'required',
-                'comunidad' => 'required',
-                'raza' => 'required',
-                'sexo' => 'required',
-                'capa' => 'required',
-                'disciplinas' => 'required',
-                'caracters' => 'required',
-            ]);
-            $caballo->fechaPublicacion = Carbon::now();
-        }
-        
-        $caballo->name = $request->get('name');
-        
-        $date = date("Y-m-d", strtotime($request->get('fechaNacimiento')));
-        $caballo->user_id = Auth()->user()->id;
-        $caballo->fechaNacimiento = $date;
-        $caballo->alzada = $request->get('alzada');
-        $caballo->alzadaEstimada = $request->get('alzadaEstimada');
-        $caballo->textoDestacado = $request->get('textoDestacado');
-        $caballo->body = $request->get('body');
-        $caballo->comunidad_id = $request->get('comunidad');
-        $caballo->sexo_id = $request->get('sexo');
-        $caballo->capa_id = $request->get('capa');
-        $caballo->raza_id = $request->get('raza');
-        $caballo->save();
-
-        $caballo->disciplinas()->sync($request->get('disciplinas'));
-        $caballo->caracters()->sync($request->get('caracters'));
-        
-        if ($request->get('tipo') == 'borrador') {
-            return back()->with('flash', 'Tu caballo ha sido guardado como borrador, sigue trabajando');
-         } else {
-            return back()->with('flash', 'Tu caballo ha sido publicado ¡enhorabuena!'); 
-         }
-        
-    }
+    
    
    
     public function update(Caballo $caballo,Request $request) {
         
         
+
         if ($request->get('tipo') == 'borrador') {
             $this->validate($request, [
                'name' => 'required'
@@ -120,6 +74,7 @@ class CaballosController extends Controller
                 'fechaNacimiento' => 'required',
                 'alzada' => 'required',
                 'textoDestacado' => 'required',
+                'fotoPortada' => 'required',
                 'body' => 'required',
                 'comunidad' => 'required',
                 'raza' => 'required',
@@ -131,6 +86,14 @@ class CaballosController extends Controller
             $caballo->fechaPublicacion = Carbon::now();
         }
         
+        /* $request->request->add(['fotoPortada'=> 'myFotoAAAA']); */
+        
+        if($foto = Caballo::setFotoPortada($request->foto_up, $caballo->fotoPortada))
+            $request->request->add(['fotoPortada'=> $foto]);
+        
+        /* dd($request->all(), $caballo->fotoPortada); */
+
+
         $caballo->name = $request->get('name');
         
         $date = date("Y-m-d", strtotime($request->get('fechaNacimiento')));
@@ -140,6 +103,7 @@ class CaballosController extends Controller
         $caballo->alzadaEstimada = $request->get('alzadaEstimada');
         $caballo->textoDestacado = $request->get('textoDestacado');
         $caballo->body = $request->get('body');
+        $caballo->fotoPortada = $request->get('fotoPortada');
         $caballo->comunidad_id = $request->get('comunidad');
         $caballo->sexo_id = $request->get('sexo');
         $caballo->capa_id = $request->get('capa');

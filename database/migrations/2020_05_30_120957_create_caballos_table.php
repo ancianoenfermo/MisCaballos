@@ -21,7 +21,7 @@ class CreateCaballosTable extends Migration
             $table->decimal('alzadaEstimada',3,0)->nullable();
             $table->mediumText('textoDestacado')->nullable();
             $table->text('body')->nullable();
-            $table->string('foto',100)->nullable();
+            $table->string('fotoPortada')->nullable();
             $table->date('fechaPublicacion')->nullable();
             
             $table->bigInteger('user_id')->unsigned()->nullable();

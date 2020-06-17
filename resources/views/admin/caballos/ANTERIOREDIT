@@ -1,6 +1,5 @@
 @extends('admin.layout')
 
-
 @section('header')
 <div class="content-header">
     <div class="container-fluid">
@@ -48,7 +47,7 @@
                             <div class="col-md-2">
                                 <!-- Fecha de nacimiento -->
                                 <div class="form-group">
-                                    <label>Fecha de nacimiento</label>
+                                    <label>Date masks:</label>
                   
                                     <div class="input-group">
                                       <div class="input-group-prepend">
@@ -190,14 +189,13 @@
 
                         <div class="row mt-3">
                             
-                               <!-- Foto portada-->
-                                <div class="form-group">
-                                    <label for="foto" class="col-md-12 bg-primary control-label">Foto de portada</label>
-                                    <div class="col-md-12">
-                                        <input type="file" name="foto_up" id="fotoPortada" data-initial-preview="{{Storage::url('imagenes/portadas/'.old('fotoPortada',$caballo->fotoPortada))}}" accept="image/*">
+                               <!-- Foto destacada-->
+                                <!-- <div class="from-group col-md-3">
+                                    <div class="dropzone">
+    
                                     </div>
-                                </div>
-                                <!-- <input type="file" name="foto_up" id="fotoPortada" data-initial-preview="{{isset($caballo->fotoportada) ? Storage::url('imagenes/portadas/$caballo->fotoportada') : 'https://via.placeholder.com/150'}}" accept="image/*"> -->  
+                                </div> -->
+                            
                                 <!-- Texto destacado del caballo-->
                                 <div class="form-group col-md-12">
                                     <label>Texto destacado</label>
@@ -310,9 +308,6 @@
 <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.min.css">
-<link rel="stylesheet" href="/bootstrap-fileinput/css/fileinput.min.css">
-
-
 @endpush
 
 
@@ -326,15 +321,6 @@
 
 <!-- FileInput -->
 <script src="/dropzone/dist/dropzone.js"></script>
-<script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/bootstrap-fileinput/js/locales/es.js"></script>
-<script src="/bootstrap-fileinput/themes/fas/theme.min.js"></script>
-
-
-
-
-
 
  <!-- CKeditor -->
 <script src="/cKeditor/cKeditor.js"></script>
@@ -382,22 +368,6 @@
       $('[data-mask]').inputmask()
 
     })
-  </script>  
-  <script>
-        $('#fotoPortada').fileinput({
-            language: 'es',
-            allowedFileExtensions: ['jpg','jpeg','png'],
-            maxFileSize: 1000,
-            showUpload: false,
-            showRemove: false,
-            showClose: false,
-            showCancel: false,
-            initialPreviewAsData: true,
-            dropZoneEnabled: false,
-            theme: 'fas'
-
-        });
-
-  </script>  
+  </script>    
 
  @endpush
