@@ -9,6 +9,7 @@ use App\Comunidad;
 use App\Disciplina;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CaballoRequest;
+use App\Photo;
 use App\Raza;
 use App\Sexo;
 use App\User;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Environment\Console;
 
 use function GuzzleHttp\Promise\all;
 
@@ -51,11 +53,28 @@ class CaballosController extends Controller
 
         $disciplinasActuales = Arr::pluck($caballo->disciplinas, 'id');
         $carcatersActuales = Arr::pluck($caballo->caracters, 'id');
+
+        $fotos = Arr::pluck($caballo->photos, 'url');
+        $fotosurl = array();
         
-        return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades','disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','fotoPortada'));
+        foreach ($fotos as $clave=>$value)
+        {
+            array_push($fotosurl,'http://miscaballos.test/storage/imagenes/fotos/'.$value);
+        }    
+       
+        $fotosCaballo = json_encode($fotosurl,JSON_UNESCAPED_SLASHES);
+        
+
+        
+        
+
+
+
+        return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades',
+        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','fotoPortada','fotosCaballo'));
     }
 
-
+   
     
    
    

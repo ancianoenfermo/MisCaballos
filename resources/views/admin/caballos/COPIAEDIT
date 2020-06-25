@@ -187,7 +187,6 @@
                             </div>
 
                         </div>
-                    
 
                         <div class="row mt-3">
                                 
@@ -202,7 +201,7 @@
                                 <!-- Texto destacado del caballo-->
                                 <div class="form-group col-md-12">
                                     <label>Texto destacado</label>
-                                    <textarea id="textodestacado" name = "textoDestacado" class="form-control"
+                                    <textarea name = "textoDestacado" class="form-control"
                                     placeholder="Introduce un resumen de tu caballo">{{old('textoDestacado', $caballo->textoDestacado)}}</textarea>
                                 </div>
                                 <!-- Descripción del caballo-->
@@ -237,8 +236,10 @@
                             </div> -->
                             <div class="col-md-12">
                                 <div class="file-loading">
-                                    <input id="gallery" name="photosUp[]" type="file" multiple>
+                                    <input id="galeria" name="foto_up[]" type="file" multiple>
+                                    
                                 </div>
+
                             </div>
                        
                         </div>
@@ -275,13 +276,9 @@
                 </div>
             </div>
             
-            
-                   
-            <input type="text" hidden id="fotosCaballo" name="fotosCaballo" value={{$fotosCaballo}}>
     </div>
     
 </form> 
-
 <!-- @if($caballo->photos->count())
 <div class="row">
 <div class="col-md-12">
@@ -305,14 +302,19 @@
     </div>
 </div>
 </div>
-
 @endif -->
-
 
 @endsection
 
 
+@section('outBody')
+<?php
+$directory = "storage/imagenes/fotos";
+$images = glob($directory . "*.*");
 
+?>
+
+@endsection
 @push('styles')
 <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -344,13 +346,9 @@
 
  <!-- CKeditor -->
 <script src="/cKeditor/cKeditor.js"></script>
-
 <script>
    CKEDITOR.replace('body');
 </script>   
-
-
-
 
 <script>
     $(function () {
@@ -369,85 +367,123 @@
     })
 </script>  
 
-
 <script>
-    
-    
-    $('#fotoPortada').fileinput({
-        language: 'es',
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        maxFileSize: 1000,
-        showUpload: false,
-        showRemove: false,
-        showClose: false,
-        showCancel: false,
-        initialPreviewAsData: true,
-        dropZoneEnabled: false,
-        theme: 'fas'
-
-    });
-
-    function _(x) {
-        return document.getElementById(x);
-    } 
-
-
-    $(document).ready(function() {
-        
-        var $el1 = $("#gallery");
-        var fotos = _('fotosCaballo').value;
-        var aa = JSON.parse(fotos);
-        console.log(aa);
-        
-        
-        var url1 = "http://miscaballos.test/storage/imagenes/fotos/XFkapiOA2wKqiOcPJzkJ.jpg";
-        var url2 =  "http://miscaballos.test/storage/imagenes/fotos/zb1jVeswOLivtFiW65Fo.jpg";
-        
-        var pp = [url1,url2];
-        console.log(Array.isArray(pp));
-      
-        
-        $el1.fileinput({ 
+        $('#fotoPortada').fileinput({
             language: 'es',
-            theme: 'fas',
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg','jpeg','png'],
+            maxFileSize: 1000,
+            showUpload: false,
+            showRemove: false,
+            showClose: false,
+            showCancel: false,
+            initialPreviewAsData: true,
+            dropZoneEnabled: false,
+            theme: 'fas'
+
+        });
+
+       /*  $('#galeria').fileinput({
+            language: 'es',
+            allowedFileExtensions: ['jpg','jpeg','png'],
             uploadUrl: "{{route('admin.caballos.photos.store',$caballo)}}",
-            append: true, 
+            overeriteInitial: false,
+            initialPreviewFileType: 'image',
+
+            uploadExtraData: function() {
+                return {
+                    _token: $("input[name='_token']").val()
+                };
+            },
+            maxFileSize: 2000,
+            maxFileCount : 10, 
+            theme: 'fas'
+
+        }); */
+
+
+
+
+
+
+
+        $('#galeria').fileinput({
+            language: 'es',
+            allowedFileExtensions: ['jpg','jpeg','png'],
+            uploadUrl: "{{route('admin.caballos.photos.store',$caballo)}}",
             uploadExtraData: function() {
                 return {
                     _token: $("input[name='_token']").val(),
                 }
             },
-            uploadAsync: true,
-            initialPreview: aa,
-            deleteUrl: "/site/file-delete",
-            showUpload: false, // hide upload button
-            overwriteInitial: false, // append files to initial preview
-            minFileCount: 1,
-            maxFileCount: 5,
-            browseOnZoneClick: true,
+            uploadAsync: false,
+            maxFileSize: 1000,
+            minFileCount:1,
+            maxFileCount : 10 , 
+            showUpload: true,
+            showRemove: false,
+            showClose: false,
+            showCancel: false,
             initialPreviewAsData: true,
-        }).on("filebatchselected", function(event, files) {
-            $el1.fileinput("upload");
+            theme: 'fas'
+
+        });
+
+    $(document).ready(function() {   
+        var url1 = 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/631px-FullMoon2010.jpg',
+        url2 = 'http://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Earth_Eastern_Hemisphere.jpg/600px-Earth_Eastern_Hemisphere.jpg';
+        var fotos = [url1,url2];
+        console.log(fotos);
+       
+        $("#input-702").fileinput({
+            theme: 'fas',
+            uploadUrl: "{{route('admin.caballos.photos.store',$caballo)}}",
+            uploadAsync: false,
+            minFileCount: 2,
+            maxFileCount: 5,
+            overwriteInitial: true,
+            initialPreview: fotos,
+            initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+            initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+        
+            
+        }).on('filesorted', function(e, params) {
+            console.log('file sorted', e, params);
+        }).on('fileuploaded', function(e, params) {
+            console.log('file uploaded', e, params);
         });
     });
-   
+
+
 </script>  
+  
+  
+  
 
  @endpush
 
 
- <!-- $("#gallery9").fileinput({
-    language:'es',
-    theme: "fas",
-    uploadAsync: true,
-    allowedFileExtensions: ['jpg','jpeg','png'],
-    uploadUrl: "{{route('admin.caballos.photos.store',$caballo)}}",
-    uploadExtraData: function() {
-        return {
-            _token: $("input[name='_token']").val(),
-        }
-    },
-    browseOnZoneClick: true,
-    resizeImageQuality: 0.75
-}); -->
+ <!-- initialPreview: ["{{'http://miscaballos.test/storage'.$caballo->photos[0]->url}}",
+        "{{'http://miscaballos.test/storage'.$caballo->photos[0]->url}}"], -->
+
+  <!--       /*  initialPreviewConfig: [
+        {caption: "People-1.jpg", size: 576237, width: "120px", url: "/site/file-delete", key: 1},
+        {caption: "People-2.jpg", size: 932882, width: "120px", url: "/site/file-delete", key: 2}, 
+    ], */
+    /* uploadExtraData: {
+        img_key: "1000",
+        img_keywords: "happy, places",
+    } */ -->
+
+
+   <!-- <script>
+    var fotos = [];
+    for ( var i = 0, foto = $caballo=>photos.length; i < l; i++ ) {
+        
+        fotos.push(foto=>url); 
+    } 
+    var url1 = 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/631px-FullMoon2010.jpg',
+        url2 = 'http://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Earth_Eastern_Hemisphere.jpg/600px-Earth_Eastern_Hemisphere.jpg';
+    
+  
+    });
+    </script>  -->
