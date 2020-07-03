@@ -51,8 +51,8 @@ class PhotosController extends Controller
        
    
         }
-    public  function destroy(Photo $photo) {
-      
+    public  function destroy(Photo $photo,Request $request ) {
+        return dd($request);
        
         $photo->delete();
         

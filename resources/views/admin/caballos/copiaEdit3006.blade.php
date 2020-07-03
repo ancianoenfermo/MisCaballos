@@ -65,7 +65,7 @@
                             <div class="form-group">
                                 <label>Ubicación</label>
                                 <select name = "comunidad" class="form-control">
-                                    <option value=""></option>
+                                    <option value="">Selecciona una comunidad</option>
                                         @foreach($comunidades as $comunidad)
                                             <option value="{{$comunidad->id}}" 
                                                 {{ old('comunidad', $caballo->comunidad_id) == $comunidad->id ? 'selected' : '' }}
@@ -76,14 +76,13 @@
                             </div>
                         </div>
                    </div>
-             
                    <div class="row">
                         <!-- Raza -->
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Raza</label>
                                 <select name = "raza"class="form-control">
-                                    <option value=""></option>
+                                    <option value="">Selecciona una raza</option>
                                         @foreach($razas as $raza)
                                             <option value="{{$raza->id}}" 
                                                 {{ old('raza', $caballo->raza_id) == $raza->id ? 'selected' : '' }}
@@ -98,7 +97,7 @@
                             <div class="form-group">
                                 <label>Sexo</label>
                                 <select name="sexo" class="form-control">
-                                        <option value=""></option>
+                                        <option value="">Selecciona un sexo</option>
                                         @foreach($sexos as $sexo)
                                         <option value="{{$sexo->id}}"
                                             {{ old('sexo',$caballo->sexo_id ) == $sexo->id ? 'selected' : '' }}
@@ -112,7 +111,7 @@
                             <div class="form-group">
                                 <label>Capa</label>
                                 <select name = "capa"class="form-control">
-                                    <option value=""></option>
+                                    <option value="">Selecciona una capa</option>
                                         @foreach($capas as $capa)
                                             <option value="{{$capa->id}}" 
                                                 {{ old('capa', $caballo->capa_id) == $capa->id ? 'selected' : '' }}
@@ -137,13 +136,12 @@
                             </div>
                         </div>  
                    </div>
-
                 </div>
             </div>
 
             <div class="row mt-4">
                 <!-- Disciplina -->
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label>Disciplina</label>
                         <select name="disciplinas[]" class="from-control select2" multiple="multiple" data-placeholder="Selecciona una o más" style="width: 100%;">
@@ -158,7 +156,7 @@
                     </div>
                 </div>
                  <!-- Caracter -->
-                 <div class="col-md-5">
+                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Carácter</label>
                         <select name="caracters[]" class="select2" multiple="multiple" data-placeholder="Selecciona uno o más" style="width: 100%;">
@@ -167,27 +165,12 @@
                                     {{ collect(old('caracters', $carcatersActuales))->contains($caracter->id) ? 'selected' : ''}}
                                     value="{{$caracter->id}}">{{$caracter->name}}
                                 </option>
+
+
                             @endforeach
                         </select>
                     </div>
-                </div>  
-                <!-- Concursos -->
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Concursos</label>
-                        <select name = "concurso" class="form-control">
-                            <option value=""></option>
-                                @foreach($concursos as $concurso)
-                                    <option value="{{$concurso->id}}" 
-                                        {{ old('concurso', $caballo->concurso_id) == $concurso->id ? 'selected' : '' }}
-                                        >{{$concurso->name}}
-                                    </option>
-                                @endforeach
-                        </select>
-                    </div>
-                </div>
-                
-                
+                </div>    
             </div>
 
             <div class="row">
@@ -226,7 +209,7 @@
                     <div class="col-md-6">
                         <!-- BOTÓN GUARDAR COMO BORRADOR -->
                         <div class="form-group">
-                            <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Guardar como privado</button>
+                            <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Guardar Borrador</button>
                         </div>
                     </div>
 
@@ -279,7 +262,7 @@
         font-weight: normal;
     }
     .file-preview  {
-        border: true;
+        border: none;
     }
     </style>
 
@@ -342,7 +325,7 @@
     }
     var fin = '"';
     var portada = inicio.concat(fotoExistente, fin);
-console.log(portada);
+
 
     var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
         'onclick="alert(\'Call your custom code here.\')">' +
@@ -377,7 +360,7 @@ console.log(portada);
         showCaption: false,
         showUploadedThumbs: false,
         previewSettings: {
-        image: {width: "auto", height: "auto", 'max-width': "100%", 'max-height': "100%"},
+    image: {width: "auto", height: "auto", 'max-width': "100%", 'max-height': "100%"},
    
 }
        
@@ -395,7 +378,6 @@ console.log(portada);
         
         var $el1 = $("#gallery");
         var fotos = _('fotosCaballo').value;
-       
         var aa = JSON.parse(fotos);
                 
         $el1.fileinput({ 
@@ -411,11 +393,11 @@ console.log(portada);
             },
             uploadAsync: true,
             initialPreview: aa,
+            deleteUrl: "{{route('admin.photos.destroy',$caballo->photos[0])}}",
             showUpload: false, // hide upload button
             overwriteInitial: false, // append files to initial preview
             minFileCount: 1,
             maxFileCount: 5,
-            dropZoneEnabled:true,
             browseOnZoneClick: true,
             initialPreviewAsData: true,
             showCancel:false,
@@ -423,10 +405,7 @@ console.log(portada);
             showRemove: false,
             showUpload: false,
             browseClass: "btn btn-primary btn-block",
-            browseLabel: "Elige fotos de tu caballo",
-            layoutTemplates: {main2: '{preview}'},
-           
-    
+            browseLabel: "Elige fotos de tu caballo"
             
         }).on("filebatchselected", function(event, files) {
             $el1.fileinput("upload");

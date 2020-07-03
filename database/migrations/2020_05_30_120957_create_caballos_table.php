@@ -19,10 +19,9 @@ class CreateCaballosTable extends Migration
             $table->date('fechaNacimiento')->nullable();
             $table->decimal('alzada',3,0)->nullable();
             $table->decimal('alzadaEstimada',3,0)->nullable();
-            $table->mediumText('textoDestacado')->nullable();
             $table->text('body')->nullable();
             $table->string('fotoPortada')->nullable();
-            $table->date('fechaPublicacion')->nullable();
+            $table->timestamp('fechaPublicacion')->nullable();
             
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')
@@ -50,11 +49,11 @@ class CreateCaballosTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->bigInteger('precio_id')->unsigned()->nullable();
-            $table->foreign('precio_id')->references('id')->on('precios')
+            $table->bigInteger('concurso_id')->unsigned()->nullable();
+            $table->foreign('concurso_id')->references('id')->on('concursos')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');    
-
+                ->onUpdate('cascade');
+                
             $table->timestamps();
         });
     }

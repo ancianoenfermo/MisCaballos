@@ -6,6 +6,7 @@ use App\Caballo;
 use App\Capa;
 use App\Caracter;
 use App\Comunidad;
+use App\Concurso;
 use App\Disciplina;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CaballoRequest;
@@ -32,7 +33,6 @@ class CaballosController extends Controller
     
 
     public function store(Request $request) {
-       
         $this->validate($request, ['name' => 'required']);
         $caballo = Caballo::create([
             'name' => $request->get('name'),
@@ -50,6 +50,8 @@ class CaballosController extends Controller
         $comunidades = Comunidad::all();
         $disciplinas = Disciplina::all();
         $razas = Raza::all();
+        $concursos = Concurso::all();
+        
 
         $disciplinasActuales = Arr::pluck($caballo->disciplinas, 'id');
         $carcatersActuales = Arr::pluck($caballo->caracters, 'id');
@@ -60,18 +62,13 @@ class CaballosController extends Controller
         foreach ($fotos as $clave=>$value)
         {
             array_push($fotosurl,'http://miscaballos.test/storage/imagenes/fotos/'.$value);
-        }    
+        }
+    
        
         $fotosCaballo = json_encode($fotosurl,JSON_UNESCAPED_SLASHES);
         
-
-        
-        
-
-
-
         return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades',
-        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','fotoPortada','fotosCaballo'));
+        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','concursos','fotoPortada','fotosCaballo'));
     }
 
    
@@ -79,9 +76,7 @@ class CaballosController extends Controller
    
    
     public function update(Caballo $caballo,Request $request) {
-        
-        
-
+       
         if ($request->get('tipo') == 'borrador') {
             $this->validate($request, [
                'name' => 'required'
@@ -92,7 +87,6 @@ class CaballosController extends Controller
                 'name' => 'required',
                 'fechaNacimiento' => 'required',
                 'alzada' => 'required',
-                'textoDestacado' => 'required',
                 'fotoPortada' => 'required',
                 'body' => 'required',
                 'comunidad' => 'required',
@@ -101,6 +95,7 @@ class CaballosController extends Controller
                 'capa' => 'required',
                 'disciplinas' => 'required',
                 'caracters' => 'required',
+                'concursos' => 'required'
             ]);
             $caballo->fechaPublicacion = Carbon::now();
         }
@@ -120,13 +115,13 @@ class CaballosController extends Controller
         $caballo->fechaNacimiento = $date;
         $caballo->alzada = $request->get('alzada');
         $caballo->alzadaEstimada = $request->get('alzadaEstimada');
-        $caballo->textoDestacado = $request->get('textoDestacado');
         $caballo->body = $request->get('body');
         $caballo->fotoPortada = $request->get('fotoPortada');
         $caballo->comunidad_id = $request->get('comunidad');
         $caballo->sexo_id = $request->get('sexo');
         $caballo->capa_id = $request->get('capa');
         $caballo->raza_id = $request->get('raza');
+        $caballo->concurso_id = $request->get('concurso');
         $caballo->save();
 
         $caballo->disciplinas()->sync($request->get('disciplinas'));

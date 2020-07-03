@@ -29,7 +29,6 @@ class CaballoRequest extends FormRequest
             'name' => 'required',
             'fechaNacimiento' => 'required',
             'alzada' => 'required',
-            'textoDestacado' => 'required',
             'body' => 'required',
             'comunidad' => 'required',
             'raza' => 'required',

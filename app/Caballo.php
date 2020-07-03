@@ -11,7 +11,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Caballo extends Model
 {
     protected $guarded = [];
-    protected $dates = ['fechaNacimiento'];
+    protected $dates = ['fechaNacimiento','fechaPublicacion'];
 
     public static function setFotoPortada($fotoPortada, $actual = false) {
         
@@ -22,7 +22,7 @@ class Caballo extends Model
             $imageName = Str::random(20).'.jpg';
             
             $imagen = Image::make($fotoPortada)->encode('jpg',75);
-            $imagen->resize(500,500, function($constraint){
+            $imagen->resize(150,150, function($constraint){
                 $constraint->upsize();
             });
             Storage::disk('public')->put("imagenes/portadas/$imageName", $imagen->stream());
@@ -41,12 +41,19 @@ class Caballo extends Model
     public function comunidad(){
         return $this->belongsTo(Comunidad::class);
     }
-    public function precio(){
-        return $this->belongsTo(Precio::class);
-    }
     public function raza() {
         return $this->belongsTo(Raza::class);
     }
+    public function sexo() {
+        return $this->belongsTo(Sexo::class);
+    }
+    
+    public function concurso() {
+        return $this->belongsTo(Concurso::class);
+    }
+    
+    
+    
     public function disciplinas() {
         
          return $this->belongsToMany(Disciplina::class);

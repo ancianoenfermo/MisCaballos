@@ -33,7 +33,7 @@
         <thead>
         <tr>
           <th style="width:25%" >Nombre</th>
-          <th style="width: 70%">Texto destacado</th>
+          
           <th style="width: 5%">Acciones</th>
         </tr>
         </thead>
@@ -41,7 +41,6 @@
             @foreach ($caballos as $caballo)
                 <tr>
                     <td> {{$caballo->name}}</td>
-                    <td> {{$caballo->textoDestacado}}</td>
                     <td>
                         <a href="{{route('admin.caballos.update',$caballo)}}"class ="btn btn-xs btn-info">
                           <i class="fa fa-pencil-alt" ></i></a>
