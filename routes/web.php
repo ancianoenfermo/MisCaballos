@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','PagesController@home')->name('home');
 Route::get('admin','PagesController@admin')->name('admin');
 Route::get('caballos','PagesController@caballos')->name('listadoCaballos');
+;
 
 /* Route::get('/', function () {
     return view('welcome');

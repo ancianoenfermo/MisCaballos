@@ -5,8 +5,9 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Nuevo caballotttt</h1>
+          <h1 class="m-0 text-dark">{{$caballo->name}}<span class="ml-5 badge badge-secondary">{{$caballo->fechaPublicacion ? 'Público' : 'Privado'}}</span></h1>
         </div><!-- /.col -->
+        
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
@@ -30,19 +31,23 @@
    @include('admin.partials.error')
    <div class="card card-primary card-outline">
        <div class = "card-body"> 
-            <div class="row">
+            <div class="row border border-secondary">
+               
                 <!-- Foto portada-->
-                <div class="col-md-2">
-                    <div class="kv-avatar">       
-                        <div class="file-loading">
-                            <input id="avatar" name="foto_up" type="file" accept="image/*">
-                        </div>
-                    </div>
+                <div class="col-md-2 mt-1 mb-1">
+                    <div  class="img-thumbnail form-group " id="preview" >
+                        <label>Foto de portada</label>
+                        <a class="btn btn-default" href="#" id="file-select">Elegir foto</a>
+                        <img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="100" height="100">
+                        <input type='file' name='fotoPortada' id="file" value=  "{{old('fotoPortada', $caballo->fotoPortada)}}" accept="image/*">
+                    </div>   
                 </div>
-                <div class="col-md-10">
-                   <div class="row">
+               
+                <div class="col-md-10 ">
+                    <div class="row ">
+                        <!-- Nombre -->
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="form-group input-group-sm">
                                 <label>Nombre del caballo</label>
                                 <input name='name' class="form-control" value = "{{old('name', $caballo->name)}}" placeholder='Introduce el nombre del caballo'>
                             </div>
@@ -50,7 +55,7 @@
                         <!-- Fecha de nacimiento -->
                         <div class="col-md-3">
                             <label>Fecha nacimiento</label>
-                            <div class="input-group mb-3">
+                            <div class="input-group  input-group-sm mb-3">
                                 <div class="input-group-prepend">
                             
                                   <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
@@ -62,10 +67,10 @@
                         </div>
                         <div class="col-md-3">
                             <!-- Comunidad -->
-                            <div class="form-group">
+                            <div class="form-group input-group-sm">
                                 <label>Ubicación</label>
                                 <select name = "comunidad" class="form-control">
-                                    <option value=""></option>
+                                    <option value="" style="display:none;"></option>
                                         @foreach($comunidades as $comunidad)
                                             <option value="{{$comunidad->id}}" 
                                                 {{ old('comunidad', $caballo->comunidad_id) == $comunidad->id ? 'selected' : '' }}
@@ -80,10 +85,10 @@
                    <div class="row">
                         <!-- Raza -->
                         <div class="col-md-2">
-                            <div class="form-group">
+                            <div class=" form-group input-group-sm">
                                 <label>Raza</label>
                                 <select name = "raza"class="form-control">
-                                    <option value=""></option>
+                                    <option value="" style="display:none;"  ></option>
                                         @foreach($razas as $raza)
                                             <option value="{{$raza->id}}" 
                                                 {{ old('raza', $caballo->raza_id) == $raza->id ? 'selected' : '' }}
@@ -95,10 +100,10 @@
                         </div>
                         <!-- Sexo -->
                         <div class="col-md-2">
-                            <div class="form-group">
+                            <div class="form-group input-group-sm ">
                                 <label>Sexo</label>
                                 <select name="sexo" class="form-control">
-                                        <option value=""></option>
+                                        <option value="" style="display:none;" ></option>
                                         @foreach($sexos as $sexo)
                                         <option value="{{$sexo->id}}"
                                             {{ old('sexo',$caballo->sexo_id ) == $sexo->id ? 'selected' : '' }}
@@ -109,10 +114,10 @@
                         </div> 
                         <div class="col-md-3">
                             <!-- capa -->
-                            <div class="form-group">
+                            <div class="form-group input-group-sm ">
                                 <label>Capa</label>
                                 <select name = "capa"class="form-control">
-                                    <option value=""></option>
+                                    <option value=""style="display:none;"></option>
                                         @foreach($capas as $capa)
                                             <option value="{{$capa->id}}" 
                                                 {{ old('capa', $caballo->capa_id) == $capa->id ? 'selected' : '' }}
@@ -124,14 +129,14 @@
                         </div>  
                         <!-- Alzada -->
                         <div class="col-md-2">
-                            <div class="form-group">
+                            <div class="form-group input-group-sm">
                                 <label>Alzada</label>
                                 <input class="form-control" value = "{{old('alzada', $caballo->alzada)}}"  name='alzada' type="number"  placeholder='Alzada' min=100 max=250>
                             </div>
                         </div> 
                         <!-- Alzada Estimada -->
                         <div class="col-md-3">
-                            <div class="form-group">
+                            <div class="form-group input-group-sm">
                                 <label>Alzada estimada</label>
                                 <input class="form-control"  value = "{{old('alzadaEstimada', $caballo->alzadaEstimada)}}"name='alzadaEstimada' type="number"  placeholder='Alzada estimada' min=100 max=250>
                             </div>
@@ -141,7 +146,7 @@
                 </div>
             </div>
 
-            <div class="row mt-4">
+            <div class="row mt-4 border border-secondary ">
                 <!-- Disciplina -->
                 <div class="col-md-5">
                     <div class="form-group">
@@ -171,12 +176,14 @@
                         </select>
                     </div>
                 </div>  
+
+                
                 <!-- Concursos -->
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Concursos</label>
-                        <select name = "concurso" class="form-control">
-                            <option value=""></option>
+                        <select name = "concurso" class="form-control" >
+                            <option value="" style="display:none;"></option>
                                 @foreach($concursos as $concurso)
                                     <option value="{{$concurso->id}}" 
                                         {{ old('concurso', $caballo->concurso_id) == $concurso->id ? 'selected' : '' }}
@@ -189,8 +196,8 @@
                 
                 
             </div>
-
-            <div class="row">
+            <div class="row mt-4 border border-secondary">
+            <!-- <div class="row mt-3 border border-secondary"> -->
                 <!-- Descripción del caballo-->
                 <div class="col-md-12">      
                     <div class="form-group">
@@ -203,8 +210,8 @@
                             {!!old('body',$caballo->body)!!}</textarea>
                         </div>
                 </div>
-            </div>
-            <div class="row">
+           <!--  </div> -->
+           <!--  <div class="row"> -->
                 <div class="col-md-12">
                     <label>Fotos</label>
                     <div class="file-loading">
@@ -212,38 +219,41 @@
                     </div>
                 </div>
             </div>
-           
+            <div class="row mt-4 border border-secondary">
+                <!-- <div class="row mt-3 border border-secondary"> -->
+                    <!-- Descripción del caballo-->
+                    <div class="col-md-12">      
+                        <div class="form-group">
+                            <label>Venta o pupilaje</label>
+                            
+                            </div>
+                    </div>
+               <!--  </div> -->
+               <!--  <div class="row"> -->
+                </div>
         
             <div class="row mt-4">     
-                @if ($caballo->fechaPublicacion)
-                    <div class="col-md-12">
-                        <!-- BOTÓN ACTUALIZAR -->
-                        <div class="form-group ml-15">
-                            <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Actualizar</button>
-                        </div>
+                <div class="col-md-6">
+                    <!-- BOTÓN GUARDAR COMO PRIVADO -->
+                    <div class="form-group">
+                        <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Guardar como privado</button>
                     </div>
-                @else 
-                    <div class="col-md-6">
-                        <!-- BOTÓN GUARDAR COMO BORRADOR -->
-                        <div class="form-group">
-                            <button name="tipo" value= "borrador" class="btn btn-primary btn-block">Guardar como privado</button>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="col-md-6">
-                        <!-- BOTÓN GUARDAR COMO BORRADOR -->
-                        <div class="form-group">
-                            <button name="tipo" value= "publicar" class="btn btn-primary btn-block">Publicar caballo</button>
-                        </div>
+                <div class="col-md-6">
+                    <!-- BOTÓN GUARDAR COMO PUBLICO -->
+                    <div class="form-group">
+                        <button name="tipo" value= "publicar" class="btn btn-primary btn-block">Guardar como público</button>
                     </div>
-                @endif
+                </div>
+               
             </div>  
         </div> <!-- fin CARD-BODY -->
    </div>   <!-- fin CARD -->
                     
                    
     <input type="text" hidden id="fotosCaballo" name="fotosCaballo" value={{$fotosCaballo}}>
-    <input type="text" hidden id="fotosDestacada" name="fotosDestacada" value={{$caballo->fotoPortada}}>
+    
     
     
 </form> 
@@ -257,32 +267,28 @@
 <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.min.css">
 <link rel="stylesheet" href="/bootstrap-fileinput/css/fileinput.min.css">
-<!-- some CSS styling changes and overrides -->
 <style>
-    .kv-avatar .krajee-default.file-preview-frame,.kv-avatar .krajee-default.file-preview-frame:hover {
-        margin: 0;
-        padding: 0;
-        border: none;
-        box-shadow: none;
-        text-align: center;
+    #preview {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        margin-bottom: 0px;
+        position: relative;
     }
-    .kv-avatar {
-        display: inline-block;
+    #preview a {
+        position: absolute;
+        bottom: 5px;
+        left:5px;
+        right: 5px;
+        display: none;
     }
-    .kv-avatar .file-input {
-        display: table-cell;
-        width: 100px;
+    #file {
+        position: absolute;
+        visibility: hidden;
+        width: 0;
+        z-index: -999;
     }
-    .kv-reqd {
-        color: red;
-        font-family: monospace;
-        font-weight: normal;
-    }
-    .file-preview  {
-        border: true;
-    }
-    </style>
-
+</style>
 @endpush
 
 
@@ -295,7 +301,6 @@
 <script src="/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 
 <!-- FileInput -->
-<script src="/dropzone/dist/dropzone.js"></script>
 <script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="/bootstrap-fileinput/js/locales/es.js"></script>
@@ -329,58 +334,32 @@
 
     })
 </script>  
-
-
 <script>
-    function _(x) {
-        return document.getElementById(x);
-    } 
-    var inicio =  '<img src="http://miscaballos.test/storage/imagenes/portadas/';
-    var fotoExistente = _('fotosDestacada').value;
-    if(fotoExistente == null || fotoExistente == '' ) {
-        fotoExistente = "Caballo.png";
-    }
-    var fin = '"';
-    var portada = inicio.concat(fotoExistente, fin);
-console.log(portada);
-
-    var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
-        'onclick="alert(\'Call your custom code here.\')">' +
-        '<i class="glyphicon glyphicon-tag"></i>' +
-        '</button>'; 
-    $("#avatar").fileinput({
-        language: 'es',
-        theme: 'fas',
-        overwriteInitial: true,
-        maxFileSize: 1500,
-        showClose: false,
-        showCaption: false,
-        showBrowse: false,
-        browseOnZoneClick: true,
-        removeLabel: 'Elimiare',
-        initialPreviewAsData: true,
-        resizeImage: true,
-        maxImageWidth: 100,
-        maxImageHeight: 100,
-        resizePreference: 'width',
-        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-        removeTitle: 'Cancel or reset changes',
-        elErrorContainer: '#kv-avatar-errors-2',
-        msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: portada,
-        layoutTemplates: {main2: '{preview}'},
-        allowedFileExtensions: ["jpg", "png", "gif"],
-        resizeImage: true,
-        maxImageWidth: 50,
-        maxImageHeight: 50,
-        resizePreference: 'width',
-        showCaption: false,
-        showUploadedThumbs: false,
-        previewSettings: {
-        image: {width: "auto", height: "auto", 'max-width': "100%", 'max-height': "100%"},
    
-}
+    $('#preview').hover(
+        function() {
+            $(this).find('a').fadeIn();
+        }, function() {
+            $(this).find('a').fadeOut();
+        }
+    );
+    
+    $('#file-select').on('click',function(e) {
+        e.preventDefault();
+        $('#file').click();
+    });
+    
+    $('input[type=file]').change(function() {
+        var reader = new FileReader();
+        var file = (this.files[0].name).toString();
        
+       
+        reader.onload = function(e) {
+            $('#preview img').attr('src',e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+       /*  alert(this.files[0].name) */
+        
     });
 </script>
 

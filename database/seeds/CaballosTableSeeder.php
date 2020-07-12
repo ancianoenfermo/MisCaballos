@@ -17,7 +17,7 @@ class CaballosTableSeeder extends Seeder
     public function run()
     {
         /* Storage::disk('public')->deleteDirectory('fotos'); */
-        factory(Caballo::class)->times(100)->create();
+        factory(Caballo::class)->times(1)->create();
         $disciplinas = Disciplina::all();
         $caracteres = Caracter::all();
         

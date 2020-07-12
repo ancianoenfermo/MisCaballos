@@ -36,6 +36,7 @@ class CaballosController extends Controller
         $this->validate($request, ['name' => 'required']);
         $caballo = Caballo::create([
             'name' => $request->get('name'),
+            'fotoPortada' => 'Caballo.png',
             'user_id' => Auth()->user()->id                 
         ]);
 
@@ -68,7 +69,7 @@ class CaballosController extends Controller
         $fotosCaballo = json_encode($fotosurl,JSON_UNESCAPED_SLASHES);
         
         return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades',
-        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','concursos','fotoPortada','fotosCaballo'));
+        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','concursos','fotosCaballo'));
     }
 
    
@@ -76,13 +77,18 @@ class CaballosController extends Controller
    
    
     public function update(Caballo $caballo,Request $request) {
-       
+        
+        /* $pp = $request->get('fotoPortada[originalName]');
+        dd($pp);
+        dd($request->all()); */
+        /* dd($request); */
         if ($request->get('tipo') == 'borrador') {
             $this->validate($request, [
                'name' => 'required'
            ]);
            $caballo->fechaPublicacion = null;
         } else {
+        
             $this->validate($request,[
                 'name' => 'required',
                 'fechaNacimiento' => 'required',
@@ -99,10 +105,13 @@ class CaballosController extends Controller
             ]);
             $caballo->fechaPublicacion = Carbon::now();
         }
-        
+       /*  $a = $request->file('fotoPortada')->getClientOriginalName(); */
+
         /* $request->request->add(['fotoPortada'=> 'myFotoAAAA']); */
-        
-        if($foto = Caballo::setFotoPortada($request->foto_up, $caballo->fotoPortada))
+        /* dd($request->fotoPortada); */
+       /*  dd($request->fotoPortada);
+ */
+        if($foto = Caballo::setFotoPortada($request->fotoPortada, $caballo->fotoPortada))
             $request->request->add(['fotoPortada'=> $foto]);
         
         /* dd($request->all(), $caballo->fotoPortada); */
@@ -116,7 +125,9 @@ class CaballosController extends Controller
         $caballo->alzada = $request->get('alzada');
         $caballo->alzadaEstimada = $request->get('alzadaEstimada');
         $caballo->body = $request->get('body');
-        $caballo->fotoPortada = $request->get('fotoPortada');
+        if($request->fotoPortada) {
+            $caballo->fotoPortada = $request->get('fotoPortada');
+        }
         $caballo->comunidad_id = $request->get('comunidad');
         $caballo->sexo_id = $request->get('sexo');
         $caballo->capa_id = $request->get('capa');
@@ -128,7 +139,7 @@ class CaballosController extends Controller
         $caballo->caracters()->sync($request->get('caracters'));
         
         if ($request->get('tipo') == 'borrador') {
-            return back()->with('flash', 'Tu caballo ha sido guardado como borrador, sigue trabajando');
+            return back()->with('flash', 'Tu caballo ha sido guardado como privado, sigue trabajando');
          } else {
             return back()->with('flash', 'Tu caballo ha sido publicado ¡enhorabuena!'); 
          }

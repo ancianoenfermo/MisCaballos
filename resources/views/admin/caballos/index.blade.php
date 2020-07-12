@@ -32,7 +32,8 @@
       <table id="caballos-table" class="table table-bordered table-hover">
         <thead>
         <tr>
-          <th style="width:25%" >Nombre</th>
+          <th style="width:10%"></th>
+          <th style="width:85%" >Nombre</th>
           
           <th style="width: 5%">Acciones</th>
         </tr>
@@ -40,9 +41,10 @@
         <tbody>
             @foreach ($caballos as $caballo)
                 <tr>
-                    <td> {{$caballo->name}}</td>
+                    <td><img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="50" height="50"   </td>
+                    <td>{{$caballo->name}}</td>
                     <td>
-                        <a href="{{route('admin.caballos.update',$caballo)}}"class ="btn btn-xs btn-info">
+                        <a href="{{route('admin.caballos.edit',$caballo)}}"class ="btn btn-xs btn-info">
                           <i class="fa fa-pencil-alt" ></i></a>
                           <form method="POST" action="{{route('admin.caballos.destroy',$caballo)}}" style="display: inline">
                             {{csrf_field()}} {{method_field('DELETE')}}
