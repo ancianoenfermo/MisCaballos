@@ -21,7 +21,10 @@ class CreateCaballosTable extends Migration
             $table->decimal('alzadaEstimada',3,0)->nullable();
             $table->text('body')->nullable();
             $table->string('fotoPortada')->nullable();
+            
+            $table->enum('estado',['PUBLICO','PRIVADO'])->default('PRIVADO');
             $table->timestamp('fechaPublicacion')->nullable();
+            $table->timestamp('fechaActualizacion')->nullable(); //solo para publicado
             
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')
@@ -53,6 +56,7 @@ class CreateCaballosTable extends Migration
             $table->foreign('concurso_id')->references('id')->on('concursos')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
                 
             $table->timestamps();
         });

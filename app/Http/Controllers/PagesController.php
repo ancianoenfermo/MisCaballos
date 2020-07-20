@@ -37,7 +37,7 @@ class PagesController extends Controller
         $disciplina_s = $request->input('disciplina_s');
         
         $caballos = Caballo::latest()
-            ->whereNotNull('fechaPublicacion')
+            ->where('estado','=',"PUBLICO")
             ->comunidad($comunidad_s)
             ->sexo($sexo_s)
             ->raza($raza_s)

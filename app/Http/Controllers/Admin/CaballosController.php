@@ -11,9 +11,11 @@ use App\Disciplina;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CaballoRequest;
 use App\Photo;
+use App\Precio;
 use App\Raza;
 use App\Sexo;
 use App\User;
+use App\Venta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -28,19 +30,16 @@ class CaballosController extends Controller
     public function index() {
         
         $caballos = auth()->user()->caballos;
+        
         return view('admin.caballos.index', compact('caballos'));
     }
     
 
-    public function store(Request $request) {
-        $this->validate($request, ['name' => 'required']);
-        $caballo = Caballo::create([
-            'name' => $request->get('name'),
-            'fotoPortada' => 'Caballo.png',
-            'user_id' => Auth()->user()->id                 
-        ]);
-
+    public function store(CaballoRequest $request) {
+        
+        $caballo = $request->create_caballo();
         return redirect()->route('admin.caballos.edit', $caballo);
+       
     }
     
     public function edit(Caballo $caballo) {
@@ -52,6 +51,7 @@ class CaballosController extends Controller
         $disciplinas = Disciplina::all();
         $razas = Raza::all();
         $concursos = Concurso::all();
+        $precios = Precio::all();
         
 
         $disciplinasActuales = Arr::pluck($caballo->disciplinas, 'id');
@@ -69,80 +69,18 @@ class CaballosController extends Controller
         $fotosCaballo = json_encode($fotosurl,JSON_UNESCAPED_SLASHES);
         
         return view('admin.caballos.edit', compact('sexos','capas','caracters','comunidades',
-        'disciplinas','razas','caballo','disciplinasActuales','carcatersActuales','concursos','fotosCaballo'));
+        'disciplinas','razas','precios','caballo','disciplinasActuales','carcatersActuales','concursos','fotosCaballo'));
     }
 
    
     
    
    
-    public function update(Caballo $caballo,Request $request) {
+    public function update(Caballo $caballo,CaballoRequest $request) {
         
-        /* $pp = $request->get('fotoPortada[originalName]');
-        dd($pp);
-        dd($request->all()); */
-        /* dd($request); */
-        if ($request->get('tipo') == 'borrador') {
-            $this->validate($request, [
-               'name' => 'required'
-           ]);
-           $caballo->fechaPublicacion = null;
-        } else {
-        
-            $this->validate($request,[
-                'name' => 'required',
-                'fechaNacimiento' => 'required',
-                'alzada' => 'required',
-                'fotoPortada' => 'required',
-                'body' => 'required',
-                'comunidad' => 'required',
-                'raza' => 'required',
-                'sexo' => 'required',
-                'capa' => 'required',
-                'disciplinas' => 'required',
-                'caracters' => 'required',
-                'concursos' => 'required'
-            ]);
-            $caballo->fechaPublicacion = Carbon::now();
-        }
-       /*  $a = $request->file('fotoPortada')->getClientOriginalName(); */
-
-        /* $request->request->add(['fotoPortada'=> 'myFotoAAAA']); */
-        /* dd($request->fotoPortada); */
-       /*  dd($request->fotoPortada);
- */
-        if($foto = Caballo::setFotoPortada($request->fotoPortada, $caballo->fotoPortada))
-            $request->request->add(['fotoPortada'=> $foto]);
-        
-        /* dd($request->all(), $caballo->fotoPortada); */
-
-
-        $caballo->name = $request->get('name');
-        
-        $date = date("Y-m-d", strtotime($request->get('fechaNacimiento')));
-        $caballo->user_id = Auth()->user()->id;
-        $caballo->fechaNacimiento = $date;
-        $caballo->alzada = $request->get('alzada');
-        $caballo->alzadaEstimada = $request->get('alzadaEstimada');
-        $caballo->body = $request->get('body');
-        if($request->fotoPortada) {
-            $caballo->fotoPortada = $request->get('fotoPortada');
-        }
-        $caballo->comunidad_id = $request->get('comunidad');
-        $caballo->sexo_id = $request->get('sexo');
-        $caballo->capa_id = $request->get('capa');
-        $caballo->raza_id = $request->get('raza');
-        $caballo->concurso_id = $request->get('concurso');
-        $caballo->save();
-
-        $caballo->disciplinas()->sync($request->get('disciplinas'));
-        $caballo->caracters()->sync($request->get('caracters'));
-        
-        if ($request->get('tipo') == 'borrador') {
-            return back()->with('flash', 'Tu caballo ha sido guardado como privado, sigue trabajando');
-         } else {
-            return back()->with('flash', 'Tu caballo ha sido publicado ¡enhorabuena!'); 
-         }
+        $request->update_caballo($caballo);
+        return back()->with('flash', 'Tu caballo ha sido publicado ¡enhorabuena!'); 
+         
         
     }
     public function destroy(Caballo $caballo) {

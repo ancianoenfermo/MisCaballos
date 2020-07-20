@@ -40,5 +40,9 @@ class User extends Authenticatable
     public function caballos() {
         return $this->hasMany(Caballo::class);
     }
+    public function anuncios() {
+        return $this->hasMany(Anuncio::class);
+    }
+
 
 }

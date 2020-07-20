@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             'concursos',
             'photos',
             'caballo_disciplina',
-            'caballo_caracter'
+            'caballo_caracter',
+            'anuncios',
         ]);
 
 

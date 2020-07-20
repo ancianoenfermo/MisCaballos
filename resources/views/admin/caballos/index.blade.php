@@ -41,7 +41,7 @@
         <tbody>
             @foreach ($caballos as $caballo)
                 <tr>
-                    <td><img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="50" height="50"   </td>
+                    <td><img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="50" height="50"></td>
                     <td>{{$caballo->name}}</td>
                     <td>
                         <a href="{{route('admin.caballos.edit',$caballo)}}"class ="btn btn-xs btn-info">
@@ -111,10 +111,11 @@
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
         <button class="btn btn-primary" >Crear caballo</button>
       </div>
     </div>
+    <input type="text", name="estado" value="PRIVADO" hidden>
   </div>
 </form>
 </div>

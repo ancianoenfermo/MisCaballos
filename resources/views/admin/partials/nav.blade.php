@@ -9,7 +9,7 @@
       </p>
     </a>
   </li>
-   
+<!-- Caballos -->
 <li class="nav-item has-treeview mt-3  {{request()->is('admin/caballos/*')  ? 'menu-open' : ''}}">
     <a href="#" class="nav-link {{request()->is('admin/caballos/*')  ? 'active' : ''}} ">
       <i class="nav-icon fas fa-horse-head"></i>
@@ -30,17 +30,34 @@
           <p>Nuevo caballo</p>
         </a>
       </li>
-
-      <!-- <li class="nav-item ml-4">
-        <a href="{{route('admin.caballos.create')}}" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
-          <i class="fas fa-pencil-alt nav-icon"></i>
-          <p>Nuevo caballo</p>
-        </a>
-      </li> -->
-
-
     </ul>
   </li>
+<!-- Anuncios -->
+  <li class="nav-item has-treeview mt-3  {{request()->is('admin/anuncios/*')  ? 'menu-open' : ''}}">
+    <a href="#" class="nav-link {{request()->is('admin/anuncios/*')  ? 'active' : ''}} ">
+      <i class="nav-icon fas fa-bullhorn"></i>
+      <p>Anuncios<i class="right fas fa-angle-left"></i></p>
+    </a>
+    <ul class="nav nav-treeview">
+      
+      <li class="nav-item ml-4">
+        <a href="{{route('admin.anuncios.index')}}" class="nav-link {{request()->is('admin/anuncios/misanuncios')  ? 'active' : ''}}">
+          <i class="far fa-eye nav-icon"></i>
+          <p>Mis anuncios</p>
+        </a>
+      </li>
+
+      <li class="nav-item ml-4">
+        <a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link {{request()->is('admin/caballos/create')  ? 'active' : ''}}">
+          <i class="fas fa-pencil-alt nav-icon"></i>
+          <p>Nuevo anuncio</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+
+
   
   <li class="nav-item mt-3">
     <a href="{{route('logout')}}" class="nav-link"

@@ -228,12 +228,14 @@
                 </div>
                 <div class="pl-4 mb-2">
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline1" name="estado" class="custom-control-input" value="PRIVADO" {{(old('estado',$caballo->estado) == 'PRIVADO') ? 'checked' : ''}}>
+                    <input type="radio" id="customRadioInline1" name="estado" class="custom-control-input" value="PRIVADO" {{$caballo->estado == 'PRIVADO' ? 'checked' : ''
+                       }}>
                     <label class="custom-control-label" for="customRadioInline1">Privado</label>
                 </div>
 
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline2" name="estado" class="custom-control-input" value="PUBLICO" {{(old('estado',$caballo->estado) == 'PUBLICO') ? 'checked' : ''}} >
+                    <input type="radio" id="customRadioInline2" name="estado" class="custom-control-input" value="PUBLICO" {{$caballo->estado == 'PUBLICO' ? 'checked' : ''
+                }} >
                     <label class="custom-control-label" for="customRadioInline2">Público</label>
                 </div>
                 </div>
@@ -241,8 +243,57 @@
             </div>
 
 
+            
+            <div class="row mt-4 border border-secondary">
+                <div class="col-md-2 pt-2 pb-3 pl-2 bg-secondary ">      
+                       
+                        <label>Anuncios</label><br>
+                       <!--  <div class="col-md-6 mb-3"> -->
+                           
+                                <select name = "anuncios" id="anuncios">
+                                    <option value="ninguno">No quiero anuncios</option>
+                                    <option value="venta">Anuncio de venta</option>
+                                    <option value="cesion">Anuncio de cesion</option>
+                                </select>
+                           
+                        <!-- </div> -->
+                </div> 
+
+                <div class="col-md-10" id="padreAnuncios">  
+                        
+                        <div  id="venta" class="form-group">
+                           
+                                <label>Texto del anuncio</label>
+                                <input name='textoAnuncio' class="form-control" value = "{{old('textoAnuncio', $caballo->name)}}" placeholder='Introduce el nombre del caballo'>
+                            
+                           
+                           
+                            
+                            <label>Precio</label>
+                            <select name = "precio" class="form-control w-25" >
+                                <option value="" style="display:none;"></option>
+                                    @foreach($precios as $precio)
+                                        <option value="{{$precio->id}}" 
+                                            {{ old('precio', $caballo->precio_id) == $precio->id ? 'selected' : '' }}
+                                            >{{$precio->name}}
+                                        </option>
+                                    @endforeach
+                                </select>    
+                            
+                        </div>
+                        
+
+                        <div  id="cesion">
+                            <Label>CESION</Label>
+                        </div>
+                        
+                </div>            
+                    
+            </div>
         
             <div class="row mt-4">     
+                
+
                 <div class="col-md-12">
                     <!-- BOTÓN GUARDAR COMO PUBLICO -->
                     <div class="form-group">

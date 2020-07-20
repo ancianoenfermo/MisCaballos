@@ -34,8 +34,14 @@ Route::get('caballos','PagesController@caballos')->name('listadoCaballos');
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-     'middelware' => 'auth'],
+    'middelware' => 'auth'],
     function() {
+    Route::get('anuncios/venta','AnunciosController@index')->name('admin.anuncios.index');
+    Route::post('anuncios','AnunciosController@store')->name('admin.anuncios.store');
+    Route::get('anuncios/{anuncio}','AnunciosController@edit')->name('admin.anuncios.edit');
+    Route::delete('anuncios/{anuncio}','AnunciosController@destroy')->name('admin.anuncios.destroy');
+    Route::put('anuncios/{anuncio}','AnunciosController@update')->name('admin.anuncios.update');
+
     Route::get('caballos/miscaballos','CaballosController@index')->name('admin.caballos.index');
     Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
     Route::post('caballos','CaballosController@store')->name('admin.caballos.store');
@@ -48,6 +54,8 @@ Route::group([
     Route::delete('caballos/{caballo}','CaballosController@destroy')->name('admin.caballos.destroy');
     Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
    
+    
+    
 
 
     Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');

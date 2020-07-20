@@ -19,6 +19,7 @@ class Caballo extends Model
             if($actual != 'Caballo.png') {
                 Storage::disk('public')->delete('imagenes/portadas/'.$actual);
             }
+            
             $imageName = Str::random(20).'.jpg';
             
             $imagen = Image::make($fotoPortada)->encode('jpg',75);
@@ -52,6 +53,9 @@ class Caballo extends Model
         return $this->belongsTo(Concurso::class);
     }
     
+    public function venta() {
+        return $this->hasOne(Venta::class);
+    }
     
     
     public function disciplinas() {
