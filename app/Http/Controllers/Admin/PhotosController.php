@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Caballo;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Photo;
-use Illuminate\Support\Facades\Storage;
+use App\Caballo;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use SebastianBergmann\Environment\Console;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PhotosController extends Controller
 {
     public function store(Caballo $caballo, Request $request ) {
-       
        
         
         /* $this->validate(request(), [
@@ -27,7 +27,7 @@ class PhotosController extends Controller
         foreach ($request->photosUp as $photo) { 
             $imageName = Str::random(20).'.jpg';
             $foto = Image::make($photo);
-            Storage::disk('public')->put("imagenes/fotos/$imageName", $foto->stream());
+            Storage::disk('public')->put("userfiles/$caballo->user_id/$imageName", $foto->stream());
             $caballo->photos()->create([
                 'url' => $imageName,       
              ]);
@@ -51,15 +51,22 @@ class PhotosController extends Controller
        
    
         }
-    public  function destroy(Photo $photo,Request $request ) {
-        return dd($request);
-       
-        $photo->delete();
         
-        Storage::disk('public')->delete($photo->url);
-
-        return back()->with('flash','Foto eliminada');
-
+    public function ruta() {
+        
+        return response()->json(['location'=>'imagenes/1/new-location.png']);
+    }
+    public  function destroy(Request $request) {
+        $photoId = $request->get('key');
+        $photo = Photo::find($photoId);
+        if (!$photo) { abort (404); }
+        $photoUrl = $photo->url;
+        $photo->delete();
+        $userId = Auth::id();
+        
+        Storage::disk('public')->delete("userfiles/$userId/".$photoUrl);
+        
+        return ['tokrn' => "hhhhh"]; 
 
     }
 }

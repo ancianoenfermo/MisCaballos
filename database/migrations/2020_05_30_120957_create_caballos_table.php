@@ -16,13 +16,14 @@ class CreateCaballosTable extends Migration
         Schema::create('caballos', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
+            $table->string('urlClean')->unique();
             $table->date('fechaNacimiento')->nullable();
             $table->decimal('alzada',3,0)->nullable();
             $table->decimal('alzadaEstimada',3,0)->nullable();
             $table->text('body')->nullable();
             $table->string('fotoPortada')->nullable();
             
-            $table->enum('estado',['PUBLICO','PRIVADO'])->default('PRIVADO');
+            $table->enum('estado',['PUBLICO','PRIVADO'])->default('PUBLICO');
             $table->timestamp('fechaPublicacion')->nullable();
             $table->timestamp('fechaActualizacion')->nullable(); //solo para publicado
             

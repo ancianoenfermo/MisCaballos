@@ -2,16 +2,17 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Caballo;
 use App\Capa;
-use App\Caracter;
-use App\Comunidad;
-use App\Concurso;
-use App\Disciplina;
 use App\Raza;
 use App\Sexo;
 use App\User;
+use App\Caballo;
+use App\Caracter;
+use App\Concurso;
+use App\Comunidad;
 use Carbon\Carbon;
+use App\Disciplina;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Caballo::class, function (Faker $faker) {
@@ -25,8 +26,12 @@ $factory->define(Caballo::class, function (Faker $faker) {
     $portadas = array('portada1.jpg','portada2.jpg','portada3.jpg','portada4.jpg','portada5.jpg','portada6.jpg','portada7.jpg','portada8.jpg','portada9.jpg');
     $totalPortadas = count($portadas);
 
+    $nombreCaballo = $faker->name;
+
+
     return [
-        'name' => $faker->name,
+        'name' => $nombreCaballo,
+        'urlClean' => Str::of($nombreCaballo)->slug(),
         'fechaNacimiento' => now(),
         'alzada' => $faker->numberBetween(140,200),
         'alzadaEstimada' => $faker->numberBetween(140,200),

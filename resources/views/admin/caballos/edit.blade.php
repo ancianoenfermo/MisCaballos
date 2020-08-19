@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.admin')
 
 @section('header')
 <div class="content-header">
@@ -37,7 +37,7 @@
                 <!-- Foto portada-->
                 <div class="col-md-2 mt-1 mb-1">
                     <div  class="img-thumbnail form-group " id="preview" >
-                        <label>Foto de portada</label>
+                        {{-- <label>Foto de portada</label> --}}
                         <a class="btn btn-default" href="#" id="file-select">Elegir foto</a>
                         <img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="100" height="100">
                         <input type='file' name='fotoPortada' id="file" value=  "{{old('fotoPortada', $caballo->fotoPortada)}}" accept="image/*">
@@ -202,14 +202,10 @@
                 <!-- Descripción del caballo-->
                 <div class="col-md-12">      
                     <div class="form-group">
-                        <label>Descripción</label>
-                        <textarea 
-                            rows='10' 
-                            name='body' 
-                            class="form-control" 
-                            placeholder='Introduce una descripción detallada del caballo'>
+                        <label for="body">Descripción</label>
+                        <textarea id="tinymce" class="form-control" name="body">
                             {!!old('body',$caballo->body)!!}</textarea>
-                        </div>
+                    </div>
                 </div>
            <!--  </div> -->
            <!--  <div class="row"> -->
@@ -254,22 +250,28 @@
         </div> <!-- fin CARD-BODY -->
    </div>   <!-- fin CARD -->
                     
-                   
+    <input type="hidden" id="token" value="{{csrf_token()}}">               
     <input type="text" hidden id="fotosCaballo" name="fotosCaballo" value={{$fotosCaballo}}>
     
     
     
 </form> 
 
-@endsection
+
 
 
 
 @push('styles')
 <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.min.css">
 <link rel="stylesheet" href="/bootstrap-fileinput/css/fileinput.min.css">
+<style>
+    .ck-editor__editable {
+        min-height: 100px;
+    }
+</style>
+
+
 <style>
     #preview {
         width: 100%;
@@ -301,9 +303,8 @@
 
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
 <script src="/plugins/select2/js/select2.full.min.js"></script>
-<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> --}}
 <!-- InputMask -->
 <script src="/plugins/moment/moment.min.js"></script>
 <script src="/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
@@ -313,18 +314,8 @@
 <script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="/bootstrap-fileinput/js/locales/es.js"></script>
 <script src="/bootstrap-fileinput/themes/fas/theme.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/icvk6nueimkbrhl6teguhy3tl6znkvrt7tpapox4zbpfls1y/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
-
-
-
-
-
- <!-- CKeditor -->
-<script src="/cKeditor/cKeditor.js"></script>
-
-<script>
-   CKEDITOR.replace('body');
-</script>   
 
 <script>
     $(function () {
@@ -342,18 +333,7 @@
 
     })
 </script>
-<script>
-    $(document).ready(function(){
-        $('#anuncios').on('change',function(){
-            var selectValor = '#'+$(this).val();
-            
-            $('#padreAnuncios').children('div').hide();
-            $('#padreAnuncios').children(selectValor).show();
 
-        });
-
-    });
-</script>  
 <script>
    
     $('#preview').hover(
@@ -368,8 +348,8 @@
         e.preventDefault();
         $('#file').click();
     });
-    
-    $('input[type=file]').change(function() {
+    // $('input[type=file]').change(function() {
+    $('#file').change(function() {
         var reader = new FileReader();
         var file = (this.files[0].name).toString();
        
@@ -378,7 +358,7 @@
             $('#preview img').attr('src',e.target.result);
         }
         reader.readAsDataURL(this.files[0]);
-       /*  alert(this.files[0].name) */
+       /* alert(this.files[0].name) */
         
     });
 </script>
@@ -433,5 +413,31 @@
     });
    
 </script>  
+<script>
+   tinymce.init({
+    selector: '#tinymce',
+    menubar: false,
+    height : "300",
+    plugins: [
+        "image fullscreen link lists media"
+    ],
+    toolbar: 'undo redo | bold italic fontsizeselect forecolor backcolor alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media|fullscreen',
+    fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px',
+    file_picker_types: 'image',
+    images_upload_handler: function (blobInfo, success, failure) {
+        let data = new FormData();
+        data.append('file', blobInfo.blob(), blobInfo.filename());
+        axios.post('caballos/file-upload', data)
+            .then(function (res) {
+                success(res.data.location);
+            })
+            .catch(function (err) {
+                failure('HTTP Error: ' + err.message);
+            });
+    }
 
- @endpush
+});
+</script>
+
+@endpush
+@endsection

@@ -2,10 +2,9 @@
 
 @section('content')
 
-<
+
 <div class="container border">
    
-        
             <div class="page-header">
                 <form method="GET" action="{{route('listadoCaballos')}}">
                    <div class="row">
@@ -222,7 +221,14 @@
                
             </div>
             <div class="col-md-1 align-self-center">
-                <button type="button" class="btn btn-primary btn-lg float-right mr-3 mb-3">Ver</button>
+                <a href="{{route('caballoShow',$caballo)}}">
+                    <button type="button"  class="btn btn-primary btn-lg float-right mr-3 mb-3">Ver</button>
+                </a>
+                
+                
+                
+                
+                
             </div>
         </div>
         <br>

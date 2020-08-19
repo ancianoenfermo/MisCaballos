@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','PagesController@home')->name('home');
-Route::get('admin','PagesController@admin')->name('admin');
+Route::get('admin','PagesController@admin')->name('admin'); 
 Route::get('caballos','PagesController@caballos')->name('listadoCaballos');
+Route::get('caballos/{caballo}','PagesController@show')->name('caballoShow');
 ;
 
 /* Route::get('/', function () {
@@ -31,37 +32,39 @@ Route::get('caballos','PagesController@caballos')->name('listadoCaballos');
 });
  */
 
+
+
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'middelware' => 'auth'],
+    'middleware' => 'auth'],
     function() {
-    Route::get('anuncios/venta','AnunciosController@index')->name('admin.anuncios.index');
-    Route::post('anuncios','AnunciosController@store')->name('admin.anuncios.store');
-    Route::get('anuncios/{anuncio}','AnunciosController@edit')->name('admin.anuncios.edit');
-    Route::delete('anuncios/{anuncio}','AnunciosController@destroy')->name('admin.anuncios.destroy');
-    Route::put('anuncios/{anuncio}','AnunciosController@update')->name('admin.anuncios.update');
-
-    Route::get('caballos/miscaballos','CaballosController@index')->name('admin.caballos.index');
-    Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
-    Route::post('caballos','CaballosController@store')->name('admin.caballos.store');
-   /*  Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update'); */
-    Route::get('caballos/{caballo}','CaballosController@edit')->name('admin.caballos.edit');
-
-    Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update');
-   
-    
-    Route::delete('caballos/{caballo}','CaballosController@destroy')->name('admin.caballos.destroy');
-    Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
-   
-    
-    
+        
+        Route::post('caballos/caballos/file-upload', 'CaballosController@uploadTinyImage');
+        
+        /* Route::get('caballos/prueba','CaballosController@prueba')->name('admin.caballos.prueba');
+        Route::get('caballosEditorprueba/{caballo}','CaballosController@editorprueba')->name('admin.caballos.editorprueba');
+        Route::get('caballosprueba/{caballo}','CaballosController@fotosprueba')->name('admin.caballos.fotosprueba'); */
 
 
-    Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');
-});
+
+        Route::get('caballos/miscaballos','CaballosController@index')->name('admin.caballos.index');
+        Route::get('caballos/create','CaballosController@create')->name('admin.caballos.create');
+        Route::post('caballos','CaballosController@store')->name('admin.caballos.store');
+        Route::get('caballos/{caballo}','CaballosController@edit')->name('admin.caballos.edit');
+        Route::put('caballos/{caballo}','CaballosController@update')->name('admin.caballos.update');
+        Route::delete('caballos/{caballo}','CaballosController@destroy')->name('admin.caballos.destroy');
+        
+
+
+
+
+
+        Route::post('caballos/{caballo}/photos','PhotosController@store')->name('admin.caballos.photos.store');
+        Route::post('photos', 'PhotosController@destroy')->name('admin.photos.destroy');
+    });
 
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+/* Route::get('/home', 'HomeController@index')->name('home'); */

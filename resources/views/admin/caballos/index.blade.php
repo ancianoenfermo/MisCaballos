@@ -1,41 +1,16 @@
-@extends('admin.layout')
-@section('header')
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Mis caballos</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-                <a href="{{route('home')}}">
-                    <i class="right fas fa-home"> </i>    
-                </a>
-            </li>
-            <li class="breadcrumb-item active">Mis caballos</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-
-@endsection
+@extends('layouts.admin')
 @section('content')
-<div class="card-primary">
-    <div class="card-header">
-      <h3 class="card-title">Todos los caballos de {{auth()->user()->name}} </h3>
-      <button class ="btn btn-primary float-right"  data-toggle="modal" data-target="#exampleModal"><i class ="fa fa-plus"></i> Nuevo caballo</button>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-      <table id="caballos-table" class="table table-bordered table-hover">
+
+  <button class ="btn btn-success mt-3 mb-3"  data-toggle="modal" data-target="#exampleModal"><i class ="fa fa-plus"></i> Nuevo caballo</button>
+  
+  
+      <table class="table border">
         <thead>
         <tr>
           <th style="width:10%"></th>
-          <th style="width:85%" >Nombre</th>
+          <th style="width:70%" >Nombre</th>
           
-          <th style="width: 5%">Acciones</th>
+          <th class="text-center" style="width: 20%">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -44,12 +19,12 @@
                     <td><img src="http://miscaballos.test/storage/imagenes/portadas/{{$caballo->fotoPortada}}" class="rounded mx-auto d-block" id="avatarImage" width="50" height="50"></td>
                     <td>{{$caballo->name}}</td>
                     <td>
-                        <a href="{{route('admin.caballos.edit',$caballo)}}"class ="btn btn-xs btn-info">
-                          <i class="fa fa-pencil-alt" ></i></a>
-                          <form method="POST" action="{{route('admin.caballos.destroy',$caballo)}}" style="display: inline">
-                            {{csrf_field()}} {{method_field('DELETE')}}
-                            <button class ="btn btn-xs btn-danger "><i class="fa fa-times" ></i></button>
-                          </form>
+                      <a href="{{route('admin.caballos.edit',$caballo->urlClean)}}" class ="btn btn-xs btn-primary">Editar</a>
+                        <a href="{{route('admin.caballos.edit',$caballo)}}" class ="btn btn-xs btn-primary">Ver</a> 
+                        
+                        <button data-toggle="modal" data-target="#deleteModal" data-id="{{$caballo->id}}" class ="btn btn-xs btn-danger ">Borrar</button>
+                            
+                          
                     </td>
                 </tr>  
             @endforeach
@@ -57,45 +32,71 @@
         </tbody>
         
       </table>
-    </div>
-    <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
+      {{$caballos->links()}}
+      
+
 @endsection
 
-@push('styles')
- <!-- DataTables -->
- <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
- <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-
- @endpush
-
- @push('scripts')
-<!-- DataTables -->
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
-<!-- DataTable script -->
-<script>
-  $(function () {
-    $('#caballos-table').DataTable({
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
+@push('scripts')
   
-</script>
-<!-- Modal -->
+
+
+
+  <script>
+    window.onload = function() {
+      $('#deleteModal').on('show.bs.modal', function (event) {
+        console.log("modal abierto")
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        action = $('#formDelete').attr('data-action').slice(0,-1)
+        console.log(action)
+        $('#formDelete').attr('action',action + id)
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Vas a borrar el caballo ' + id)
+        
+      });
+    };
+  </script>
+@endpush
+
+<!-- Modal  borrar caballo-->
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>¿Seguro que desea borrar el caballo seleccionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <form id="formDelete" method="POST" action="{{ route('admin.caballos.destroy', 0)}}" data-action="{{ route('admin.caballos.destroy', 0)}}">
+            @method('DELETE')
+            @csrf
+            <button type="submit" class="btn btn-primary btn-danger">Borrar</button>
+          </form>
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form method="POST" action="{{route('admin.caballos.store')}}">
     {{csrf_field()}}
-  
+    @include('admin.partials.error')
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,5 +119,6 @@
     <input type="text", name="estado" value="PRIVADO" hidden>
   </div>
 </form>
-</div>
-@endpush
+
+
+</div>  

@@ -36,7 +36,7 @@ class PagesController extends Controller
         $caracter_s  = $request->input('caracter_s');
         $disciplina_s = $request->input('disciplina_s');
         
-        $caballos = Caballo::latest()
+        $caballos = Caballo::latest('fechaPublicacion')
             ->where('estado','=',"PUBLICO")
             ->comunidad($comunidad_s)
             ->sexo($sexo_s)
@@ -45,7 +45,8 @@ class PagesController extends Controller
             ->concurso($concurso_s)
             ->caracter($caracter_s)
             ->disciplina($disciplina_s)
-            ->paginate(4)->appends($request->all());
+            ->paginate(15)->appends($request->all());
+        
        
         $now = Carbon::now();
         $comunidades = Comunidad::all();
@@ -59,4 +60,10 @@ class PagesController extends Controller
         return(view('listadoCaballos',compact('caballos','now','comunidades','sexos','razas','capas','concursos','caracters','disciplinas','comunidad_s','sexo_s','raza_s','capa_s','concurso_s','caracter_s','disciplina_s')));
     }
 
+    public function show(Caballo $caballo) {
+        return view('detalleCaballo',compact('caballo'));
+        
+    }
+
+    
 }

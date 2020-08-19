@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use App\Caballo;
 use Carbon\Carbon;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CaballoRequest extends FormRequest
 {
@@ -30,7 +31,9 @@ class CaballoRequest extends FormRequest
        
         if ($this->get('estado') == 'PRIVADO') {  
            
-            $rules = ['name' => 'required'];
+            $rules = [
+                'name' => 'required',
+                ];
         } else {
             
             $rules = [
@@ -50,12 +53,25 @@ class CaballoRequest extends FormRequest
        return $rules;     
     }
     function create_caballo() {
+        $stringUrl = $this->get('name');
+        
+        $rnd = rand(10, 99);
+        
+        $stringUrl = Str::of($stringUrl)->slug().'-'.$rnd;
+        
+            
+        /* 'name' => $this->get('name'), */
+        
+        
+        
         $caballo = Caballo::create([
             'name' => $this->get('name'),
+            'urlClean' => $stringUrl,
             'estado' => 'PRIVADO',
             'fotoPortada' => 'Caballo.png',
             'user_id' => Auth()->user()->id                 
         ]);
+        
         return $caballo;
     }
 
